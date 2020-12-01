@@ -45,10 +45,10 @@
 </head>
 
 <body>
-  {{-- <div class="text-center" id="preloader">
+  <div class="text-center" id="preloader">
     <img src="{{asset('assets/img/Spin.gif')}}" width="90" alt="">
     <p>Loading ...</p>
-  </div> --}}
+  </div>
   @include('Backend.Layout.sidebar')
   <!-- Main content -->
   <div class="main-content" id="panel">

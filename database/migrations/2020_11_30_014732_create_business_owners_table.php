@@ -32,10 +32,6 @@ class CreateBusinessOwnersTable extends Migration
             $table->string('ktp_address');
 
             $table->string('photo')->nullable();
-            $table->string('attachment', 100)->nullable();
-            $table->string('status', 20);
-            $table->unsignedBigInteger('community_id')->nullable();
-            $table->foreign('community_id')->references('id')->on('communities')->onDelete('cascade');
 
             $table->string('created_by', 50);
             $table->string('updated_by', 50)->nullable();

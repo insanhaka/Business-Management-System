@@ -2,6 +2,51 @@
 
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
+<style>
+    .select-formhide {
+        display: none;
+    }
+    .select-formshow {
+        display: flex;
+    }
+</style>
+<style>
+    /*the container must be positioned relative:*/
+.autocomplete {
+  position: relative;
+  display: inline-block;
+}
+
+.autocomplete-items {
+  position: absolute;
+  border: 1px solid #d4d4d4;
+  border-bottom: none;
+  border-top: none;
+  z-index: 99;
+  /*position the autocomplete items to be the same width as the container:*/
+  top: 90%;
+  left: 0;
+  right: 0;
+}
+
+.autocomplete-items div {
+  padding: 7px;
+  cursor: pointer;
+  background-color: #fff; 
+  border-bottom: 1px solid #d4d4d4; 
+}
+
+/*when hovering an item:*/
+.autocomplete-items div:hover {
+  background-color: #e9e9e9; 
+}
+
+/*when navigating through the items using the arrow keys:*/
+.autocomplete-active {
+  background-color: DodgerBlue !important; 
+  color: #ffffff; 
+}
+</style>
 @endsection
 
 @section('content')
@@ -10,7 +55,7 @@
 
     <div class="card">
         <div class="card-header">
-          <h2 class="text-primary">Add Business Data</h2>
+          <h2 class="text-primary">Tambah Data Usaha</h2>
         </div>
         <div class="card-body">
             <form method="POST" action="/dapur/business/create" enctype="multipart/form-data">
@@ -19,31 +64,57 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Business Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Business sector's name">
+                                <label for="exampleFormControlInput1">NIK Pemilik</label>
+                                <input type="text" class="form-control" id="nik" name="nik" placeholder="Owner NIK">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Owner Name</label>
+                                <label for="exampleFormControlInput1">Nama Pemilik</label>
                                 <input type="text" class="form-control" id="owner" name="owner" placeholder="Business owner name">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Contact</label>
-                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx">
+                                <label for="exampleFormControlInput1">Nama Usaha</label>
+                                <input type="text" class="form-control" id="address" name="address" placeholder="Details business address">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Business Sector</label>
-                                <select class="form-control" name="business_sectors_id">
-                                    <option value="">-- Select Business Sector --</option>
-                                    @foreach ($sectors as $sector)
-                                    <option value="{!!$sector->id!!}">{!! $sector->name !!}</option>
+                                <label for="exampleFormControlInput1">Status Verifikasi</label>
+                                <select class="form-control" name="status">
+                                    <option value="">-- Select Status --</option>
+                                    <option value="verif">Verify</option>
+                                    <option value="notverif">Not Verify</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Ikut Dalam Kelompok/Paguyuban ?</label>
+                                <select class="form-control" name="community" id="menu-type" onchange="statuskelompok()">
+                                    <option value="">-- Select --</option>
+                                    <option value="kelompok">Ya</option>
+                                    <option value="individu">Tidak</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row select-formhide" id="select_parent">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Nama Kelompok/Paguyuban</label>
+                                <select class="form-control" name="community_id">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($community as $item)
+                                    <option value="{!! $item->id !!}">{!! $item->name !!}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -52,14 +123,46 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Province )</label>
+                                <label for="exampleFormControlInput1">Jenis Usaha</label>
+                                <select class="form-control" name="business_sectors_id">
+                                    <option value="">-- Select Business Sector --</option>
+                                    @foreach ($sector as $data)
+                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Kategori Usaha</label>
+                                <select class="form-control" name="business_category_id">
+                                    <option value="">-- Select Business Category --</option>
+                                    @foreach ($category as $data)
+                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">No. Telfon</label>
+                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Provinsi )</label>
                                 <select class="form-control" id="province" name="loc_province">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Regency )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Kabupaten/Kota )</label>
                                 <select class="form-control" id="regency" name="loc_regency">
                                 </select>
                             </div>
@@ -68,14 +171,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( District )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Kecamatan )</label>
                                 <select class="form-control" id="district" name="loc_district">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Village )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Desa )</label>
                                 <select class="form-control" id="village" name="loc_village">
                                 </select>
                             </div>
@@ -84,8 +187,34 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Details Address</label>
+                                <label for="exampleFormControlInput1">Details alamat Usaha</label>
                                 <input type="text" class="form-control" id="address" name="address" placeholder="Details business address">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleInput">Upload Gambar Usaha</label>
+                                <div class="tower-file">
+                                    <input type="file" name="photo" id="demoInput5" />
+                                    <label for="demoInput5" class="btn btn-primary">
+                                        <span class="mdi mdi-upload"></span>Select Files
+                                    </label>
+                                    <button type="button" class="tower-file-clear btn btn-secondary align-top">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Usaha ini Aktiv?</label>
+                                <select class="form-control" name="is_active">
+                                    <option value="">-- Select --</option>
+                                    <option value="1">Ya</option>
+                                    <option value="0">Belum</option>
+                                </select>
                             </div>
                         </div>
                     </div>
@@ -117,6 +246,21 @@
     $('#demoInput5').fileInput({
         iconClass: 'mdi mdi-fw mdi-upload'
     });
+</script>
+
+<script>
+    //Script Hide or Show Select Menu Community 
+    function statuskelompok() {
+        var i = document.getElementById("menu-type").value;
+        // console.log(i);
+        if(i === "kelompok"){
+            $('#select_parent').removeClass("select-formhide");
+            $('#select_parent').addClass("select-formshow");
+        }else {
+            $('#select_parent').removeClass("select-formshow");
+            $('#select_parent').addClass("select-formhide");
+        }
+    }
 </script>
 
 <script>
@@ -212,6 +356,131 @@
         });
 
     });
+</script>
+
+<script>
+    function autocomplete(inp, arr) {
+      /*the autocomplete function takes two arguments,
+      the text field element and an array of possible autocompleted values:*/
+      var currentFocus;
+      /*execute a function when someone writes in the text field:*/
+      inp.addEventListener("input", function(e) {
+          var a, b, i, val = this.value;
+          /*close any already open lists of autocompleted values*/
+          closeAllLists();
+          if (!val) { return false;}
+          currentFocus = -1;
+          /*create a DIV element that will contain the items (values):*/
+          a = document.createElement("DIV");
+          a.setAttribute("id", this.id + "autocomplete-list");
+          a.setAttribute("class", "autocomplete-items");
+          /*append the DIV element as a child of the autocomplete container:*/
+          this.parentNode.appendChild(a);
+          /*for each item in the array...*/
+          for (i = 0; i < arr.length; i++) {
+            /*check if the item starts with the same letters as the text field value:*/
+            if (arr[i].substr(0, val.length).toUpperCase() == val.toUpperCase()) {
+              /*create a DIV element for each matching element:*/
+              b = document.createElement("DIV");
+              /*make the matching letters bold:*/
+              b.innerHTML = "<strong>" + arr[i].substr(0, val.length) + "</strong>";
+              b.innerHTML += arr[i].substr(val.length);
+              /*insert a input field that will hold the current array item's value:*/
+              b.innerHTML += "<input type='hidden' value='" + arr[i] + "'>";
+              /*execute a function when someone clicks on the item value (DIV element):*/
+              b.addEventListener("click", function(e) {
+                  /*insert the value for the autocomplete text field:*/
+                  inp.value = this.getElementsByTagName("input")[0].value;
+                  /*close the list of autocompleted values,
+                  (or any other open lists of autocompleted values:*/
+                  closeAllLists();
+              });
+              a.appendChild(b);
+            }
+          }
+      });
+      /*execute a function presses a key on the keyboard:*/
+      inp.addEventListener("keydown", function(e) {
+          var x = document.getElementById(this.id + "autocomplete-list");
+          if (x) x = x.getElementsByTagName("div");
+          if (e.keyCode == 40) {
+            /*If the arrow DOWN key is pressed,
+            increase the currentFocus variable:*/
+            currentFocus++;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 38) { //up
+            /*If the arrow UP key is pressed,
+            decrease the currentFocus variable:*/
+            currentFocus--;
+            /*and and make the current item more visible:*/
+            addActive(x);
+          } else if (e.keyCode == 13) {
+            /*If the ENTER key is pressed, prevent the form from being submitted,*/
+            e.preventDefault();
+            if (currentFocus > -1) {
+              /*and simulate a click on the "active" item:*/
+              if (x) x[currentFocus].click();
+            }
+          }
+      });
+      function addActive(x) {
+        /*a function to classify an item as "active":*/
+        if (!x) return false;
+        /*start by removing the "active" class on all items:*/
+        removeActive(x);
+        if (currentFocus >= x.length) currentFocus = 0;
+        if (currentFocus < 0) currentFocus = (x.length - 1);
+        /*add class "autocomplete-active":*/
+        x[currentFocus].classList.add("autocomplete-active");
+      }
+      function removeActive(x) {
+        /*a function to remove the "active" class from all autocomplete items:*/
+        for (var i = 0; i < x.length; i++) {
+          x[i].classList.remove("autocomplete-active");
+        }
+      }
+      function closeAllLists(elmnt) {
+        /*close all autocomplete lists in the document,
+        except the one passed as an argument:*/
+        var x = document.getElementsByClassName("autocomplete-items");
+        for (var i = 0; i < x.length; i++) {
+          if (elmnt != x[i] && elmnt != inp) {
+            x[i].parentNode.removeChild(x[i]);
+          }
+        }
+      }
+      /*execute a function when someone clicks in the document:*/
+      document.addEventListener("click", function (e) {
+          closeAllLists(e.target);
+      });
+    }
+    
+    // GET data owner by API
+    axios.get('/api/data-owner')
+    .then(function (response) {
+        // handle success
+        var owner = response.data.data;
+        var arr = JSON.parse(owner);
+        console.log(arr);
+        // for (let i = 0; i < owner.length; i++) {
+
+        //     const nik = owner[i].nik;
+        //     console.log(nik);
+            
+        // }
+    })
+    .catch(function (error) {
+        // handle error
+        console.log(error);
+    });
+
+    var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+
+    console.log(countries);
+    
+    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+    autocomplete(document.getElementById("nik"), countries);
 </script>
 
 @endsection

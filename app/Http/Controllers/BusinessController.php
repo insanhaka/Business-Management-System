@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Models\Business;
 use App\Models\Sector;
 use App\Models\Community;
+use App\Models\Business_category;
 use App\Models\Business_picture;
+use App\Models\Business_owner;
 use App\Models\Operation_days;
 use Illuminate\Support\Str;
 
@@ -14,19 +16,22 @@ class BusinessController extends Controller
 {
     public function view()
     {
-        $business = Business::all();
-        return view('Backend.Business.index', ['business' => $business]);
+        $owner = Business_owner::all();
+        return view('Backend.Business.index', ['owner' => $owner]);
     }
 
     public function add()
     {
+        $sector = Sector::all();
         $community = Community::all();
-        return view('Backend.Business.create_owner', ['data' => $community]);
+        $category = Business_category::all();
+        return view('Backend.Business.create_business', ['sector' => $sector, 'community' => $community, 'category' => $category]);
     }
 
     public function create(Request $request)
     {
-        // dd($request->all());
+        dd($request->all());
+        
         $data = new Business;
         $data->name = $request->name;
         $data->loc_province = $request->loc_province;

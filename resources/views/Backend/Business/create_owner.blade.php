@@ -2,14 +2,7 @@
 
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
-<style>
-    .select-formhide {
-        display: none;
-    }
-    .select-formshow {
-        display: flex;
-    }
-</style>
+
 @endsection
 
 @section('content')
@@ -34,44 +27,7 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">NIK</label>
-                                <input type="text" class="form-control" id="nik" name="nik" placeholder="NIK">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Status Verifikasi</label>
-                                <select class="form-control" name="business_sectors_id">
-                                    <option value="">-- Select Status --</option>
-                                    <option value="yes">Verify</option>
-                                    <option value="no">Not Verify</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Ikut Dalam Kelompok/Paguyuban ?</label>
-                                <select class="form-control" name="type" id="menu-type" onchange="statuskelompok()">
-                                    <option value="">-- Select --</option>
-                                    <option value="kelompok">Ya</option>
-                                    <option value="individu">Tidak</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row select-formhide" id="select_parent">
-                        <div class="col-md-12">
-                            <div class="form-group">
-                                <label for="exampleFormControlInput1">Nama Kelompok/Paguyuban</label>
-                                <select class="form-control" name="parent_id">
-                                    <option value="">-- Select --</option>
-                                    @foreach ($data as $item)
-                                    <option value="{!! $item->id !!}">{!! $item->name !!}</option>
-                                    @endforeach
-                                </select>
+                                <input type="text" class="form-control" id="nik" name="nik" placeholder="NIK" maxlength="18">
                             </div>
                         </div>
                     </div>
@@ -117,13 +73,23 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Details Alamat</label>
-                                <input type="text" class="form-control" id="ktp-address" name="ktp_address" placeholder="Details business address">
+                                <input type="text" class="form-control" id="ktp-address" name="ktp_address" placeholder="Details owner address">
                             </div>
                         </div>
                     </div>
                     <div class="row">
                         <div class="col-md-12">
-                            <p style="color: #546de5; font-weight: bold;">Alamat Domisili</p>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <p style="color: #546de5; font-weight: bold;">Alamat Domisili</p>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-group form-check">
+                                        <input type="checkbox" class="form-check-input" id="same" onclick="sameaddress()">
+                                        <label class="form-check-label" for="exampleCheck1" style="font-size: 12px; color: #546de5;">Klik jika alamat domisili sama dengan KTP</label>
+                                    </div>
+                                </div>
+                            </div>
                             <hr style="margin-top: -1%; border-color: #546de5;">
                         </div>
                     </div>
@@ -163,7 +129,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Details Alamat</label>
-                                <input type="text" class="form-control" id="domisili-address" name="domisili_address" placeholder="Details business address">
+                                <input type="text" class="form-control" id="domisili-address" name="domisili_address" placeholder="Details owner address">
                             </div>
                         </div>
                     </div>
@@ -186,27 +152,75 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
 
 <script>
+    //Script Menu Active when click
     $(document).ready(function() {
         $("#business").addClass("active");
     });
 </script>
 
 <script type="text/javascript">
+    //Script Image input
     $('#demoInput5').fileInput({
         iconClass: 'mdi mdi-fw mdi-upload'
     });
 </script>
 
 <script>
-    function statuskelompok() {
-        var i = document.getElementById("menu-type").value;
-        // console.log(i);
-        if(i === "kelompok"){
-            $('#select_parent').removeClass("select-formhide");
-            $('#select_parent').addClass("select-formshow");
-        }else {
-            $('#select_parent').removeClass("select-formshow");
-            $('#select_parent').addClass("select-formhide");
+    //Script CheckBox When same address
+    function sameaddress() {
+        var checkBox = document.getElementById("same");
+
+        let valprov = $('#domisili-province');
+        let valreg = $('#domisili-regency');
+        let valdist = $('#domisili-district');
+        let valvill = $('#domisili-village');
+
+        if (checkBox.checked == true){
+            //   console.log('Alamat sama');
+            var prov = document.getElementById("ktp-province").value;
+            var reg = document.getElementById("ktp-regency").value;
+            var dist = document.getElementById("ktp-district").value;
+            var vill = document.getElementById("ktp-village").value;
+            var addr = document.getElementById("ktp-address").value;
+
+            valprov.empty();
+            valprov.append('<option value="'+prov+'">'+prov+'</option>');
+            valprov.prop('selectedIndex', 0);
+
+            valreg.empty();
+            valreg.append('<option value="'+reg+'">'+reg+'</option>');
+            valreg.prop('selectedIndex', 0);
+
+            valdist.empty();
+            valdist.append('<option value="'+dist+'">'+dist+'</option>');
+            valdist.prop('selectedIndex', 0);
+
+            valvill.empty();
+            valvill.append('<option value="'+vill+'">'+vill+'</option>');
+            valvill.prop('selectedIndex', 0);
+
+            document.getElementById("domisili-address").value = addr;
+
+        } else {
+            
+            valprov.empty();
+            valprov.append('<option disabled>-- Select Regency --</option>');
+            valprov.prop('selectedIndex', 0);
+
+            valreg.empty();
+            valreg.append('<option disabled>-- Select Regency --</option>');
+            valreg.prop('selectedIndex', 0);
+
+            valdist.empty();
+            valdist.append('<option disabled>-- Select Regency --</option>');
+            valdist.prop('selectedIndex', 0);
+
+            valvill.empty();
+            valvill.append('<option disabled>-- Select Regency --</option>');
+            valvill.prop('selectedIndex', 0);
+
+            document.getElementById("domisili-address").value = "";
+
         }
     }
 </script>

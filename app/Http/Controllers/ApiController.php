@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\User;
+use App\Models\Business_owner;
 use DB;
 
 class ApiController extends Controller
@@ -27,6 +28,15 @@ class ApiController extends Controller
 
         return response()->json([
             'databusiness' => $business,
+        ]);
+    }
+
+    public function dataowner()
+    {
+        $owner = Business_owner::all();
+        return response()->json([
+            'message' => 'success',
+            'data' => $owner
         ]);
     }
 

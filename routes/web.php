@@ -15,6 +15,8 @@ use App\Http\Controllers\MenuController;
 use App\Http\Controllers\SectorController;
 use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\OwnerController;
+use App\Http\Controllers\BusinesscategoryController;
+use App\Http\Controllers\CommunityController;
 
 
 
@@ -79,6 +81,20 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::post('/business-sector/update/{id}', [SectorController::class, 'update']);
     Route::get('/business-sector/delete/{id}', [SectorController::class, 'delete']);
 
+    Route::get('/community', [CommunityController::class, 'view'])->name('community');
+    Route::get('/community/add', [CommunityController::class, 'add']);
+    Route::post('/community/create', [CommunityController::class, 'create']);
+    Route::get('/community/edit/{id}', [CommunityController::class, 'edit']);
+    Route::post('/community/update/{id}', [CommunityController::class, 'update']);
+    Route::get('/community/delete/{id}', [CommunityController::class, 'delete']);
+
+    Route::get('/business-category', [BusinesscategoryController::class, 'view'])->name('business-category');
+    Route::get('/business-category/add', [BusinesscategoryController::class, 'add']);
+    Route::post('/business-category/create', [BusinesscategoryController::class, 'create']);
+    Route::get('/business-category/edit/{id}', [BusinesscategoryController::class, 'edit']);
+    Route::post('/business-category/update/{id}', [BusinesscategoryController::class, 'update']);
+    Route::get('/business-category/delete/{id}', [BusinesscategoryController::class, 'delete']);
+
     Route::get('/business', [BusinessController::class, 'view'])->name('business');
     Route::get('/business/add', [BusinessController::class, 'add']);
     Route::post('/business/create', [BusinessController::class, 'create']);
@@ -88,6 +104,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/business/show/{id}', [BusinessController::class, 'show']);
     Route::post('/business/activation', [BusinessController::class, 'activation']);
 
+    Route::get('/business/owner/add', [OwnerController::class, 'add']);
     Route::post('/business/owner/create', [OwnerController::class, 'create']);
     Route::get('/business/owner/edit/{id}', [OwnerController::class, 'edit']);
     Route::post('/business/owner/update/{id}', [OwnerController::class, 'update']);

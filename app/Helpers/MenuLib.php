@@ -45,7 +45,7 @@ class MenuLib
 
             if ($data_menu->type === 'parent') {
                 $id_parent = $data_menu->id;
-                $html_out = '<p style="font-size: 13px; color: #596275; margin-top: 15px; margin-left: 25px;">-----------'.$menu_name.'-----------</p>';
+                $html_out = '<p style="font-size: 12px; color: #a4b0be; margin-top: 15px; margin-left: 25px;">-----------'.$menu_name.'-----------</p>';
                 echo $html_out;
             }else {
                 if ($data_menu->parent_id == $id_parent) {
