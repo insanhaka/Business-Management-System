@@ -32,19 +32,19 @@
 .autocomplete-items div {
   padding: 7px;
   cursor: pointer;
-  background-color: #fff; 
-  border-bottom: 1px solid #d4d4d4; 
+  background-color: #fff;
+  border-bottom: 1px solid #d4d4d4;
 }
 
 /*when hovering an item:*/
 .autocomplete-items div:hover {
-  background-color: #e9e9e9; 
+  background-color: #e9e9e9;
 }
 
 /*when navigating through the items using the arrow keys:*/
 .autocomplete-active {
-  background-color: DodgerBlue !important; 
-  color: #ffffff; 
+  background-color: DodgerBlue !important;
+  color: #ffffff;
 }
 </style>
 @endsection
@@ -79,7 +79,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Nama Usaha</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Details business address">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Business name">
                             </div>
                         </div>
                     </div>
@@ -188,7 +188,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Details alamat Usaha</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Details business address">
+                                <input type="text" class="form-control" id="address" name="loc_address" placeholder="Details business address">
                             </div>
                         </div>
                     </div>
@@ -249,7 +249,7 @@
 </script>
 
 <script>
-    //Script Hide or Show Select Menu Community 
+    //Script Hide or Show Select Menu Community
     function statuskelompok() {
         var i = document.getElementById("menu-type").value;
         // console.log(i);
@@ -455,32 +455,44 @@
           closeAllLists(e.target);
       });
     }
-    
+
     // GET data owner by API
     axios.get('/api/data-owner')
     .then(function (response) {
         // handle success
         var owner = response.data.data;
-        var arr = JSON.parse(owner);
-        console.log(arr);
-        // for (let i = 0; i < owner.length; i++) {
-
-        //     const nik = owner[i].nik;
-        //     console.log(nik);
-            
-        // }
+        var nik = owner.map((item) => String(item.nik));
+        /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
+        autocomplete(document.getElementById("nik"), nik);
     })
     .catch(function (error) {
         // handle error
         console.log(error);
     });
 
-    var countries = ["Afghanistan","Albania","Algeria","Andorra","Angola","Anguilla","Antigua & Barbuda","Argentina","Armenia","Aruba","Australia","Austria","Azerbaijan","Bahamas","Bahrain","Bangladesh","Barbados","Belarus","Belgium","Belize","Benin","Bermuda","Bhutan","Bolivia","Bosnia & Herzegovina","Botswana","Brazil","British Virgin Islands","Brunei","Bulgaria","Burkina Faso","Burundi","Cambodia","Cameroon","Canada","Cape Verde","Cayman Islands","Central Arfrican Republic","Chad","Chile","China","Colombia","Congo","Cook Islands","Costa Rica","Cote D Ivoire","Croatia","Cuba","Curacao","Cyprus","Czech Republic","Denmark","Djibouti","Dominica","Dominican Republic","Ecuador","Egypt","El Salvador","Equatorial Guinea","Eritrea","Estonia","Ethiopia","Falkland Islands","Faroe Islands","Fiji","Finland","France","French Polynesia","French West Indies","Gabon","Gambia","Georgia","Germany","Ghana","Gibraltar","Greece","Greenland","Grenada","Guam","Guatemala","Guernsey","Guinea","Guinea Bissau","Guyana","Haiti","Honduras","Hong Kong","Hungary","Iceland","India","Indonesia","Iran","Iraq","Ireland","Isle of Man","Israel","Italy","Jamaica","Japan","Jersey","Jordan","Kazakhstan","Kenya","Kiribati","Kosovo","Kuwait","Kyrgyzstan","Laos","Latvia","Lebanon","Lesotho","Liberia","Libya","Liechtenstein","Lithuania","Luxembourg","Macau","Macedonia","Madagascar","Malawi","Malaysia","Maldives","Mali","Malta","Marshall Islands","Mauritania","Mauritius","Mexico","Micronesia","Moldova","Monaco","Mongolia","Montenegro","Montserrat","Morocco","Mozambique","Myanmar","Namibia","Nauro","Nepal","Netherlands","Netherlands Antilles","New Caledonia","New Zealand","Nicaragua","Niger","Nigeria","North Korea","Norway","Oman","Pakistan","Palau","Palestine","Panama","Papua New Guinea","Paraguay","Peru","Philippines","Poland","Portugal","Puerto Rico","Qatar","Reunion","Romania","Russia","Rwanda","Saint Pierre & Miquelon","Samoa","San Marino","Sao Tome and Principe","Saudi Arabia","Senegal","Serbia","Seychelles","Sierra Leone","Singapore","Slovakia","Slovenia","Solomon Islands","Somalia","South Africa","South Korea","South Sudan","Spain","Sri Lanka","St Kitts & Nevis","St Lucia","St Vincent","Sudan","Suriname","Swaziland","Sweden","Switzerland","Syria","Taiwan","Tajikistan","Tanzania","Thailand","Timor L'Este","Togo","Tonga","Trinidad & Tobago","Tunisia","Turkey","Turkmenistan","Turks & Caicos","Tuvalu","Uganda","Ukraine","United Arab Emirates","United Kingdom","United States of America","Uruguay","Uzbekistan","Vanuatu","Vatican City","Venezuela","Vietnam","Virgin Islands (US)","Yemen","Zambia","Zimbabwe"];
+</script>
 
-    console.log(countries);
-    
-    /*initiate the autocomplete function on the "myInput" element, and pass along the countries array as possible autocomplete values:*/
-    autocomplete(document.getElementById("nik"), countries);
+<script>
+    $( "#owner" ).click(function() {
+        var getnik = document.getElementById("nik").value;
+        // GET data owner by API
+        axios.get('/api/data-owner')
+        .then(function (response) {
+            // handle success
+            var dataowner = response.data.data;
+            for (let i = 0; i < dataowner.length; i++) {
+
+                if (dataowner[i].nik == getnik) {
+                    document.getElementById("owner").value = dataowner[i].name;
+                }
+
+            }
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        });
+    });
 </script>
 
 @endsection
