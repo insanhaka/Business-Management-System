@@ -22,4 +22,9 @@ class Community extends Model
             $model->updated_by = \Auth::user()->username;
         });
     }
+
+    public function business()
+    {
+        return $this->hasMany('App\Models\Business', 'community_id', 'id');
+    }
 }

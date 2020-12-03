@@ -24,4 +24,9 @@ class Sector extends Model
             $model->updated_by = \Auth::user()->username;
         });
     }
+
+    public function business()
+    {
+        return $this->hasMany('App\Models\Business', 'business_sectors_id', 'id');
+    }
 }

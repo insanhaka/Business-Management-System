@@ -31,20 +31,26 @@ class BusinessController extends Controller
     public function create(Request $request)
     {
         // dd($request->all());
+        $owner = Business_owner::where('nik', $request->nik)->first();
+        $photo = $request->file('photo');
 
-        $files = $request->file('photo');
-
-        if ($files == null) {
+        if ($photo == null) {
             $data = new Business;
+            $data->business_owner_id = $owner->id;
+            $data->owner = $request->owner;
             $data->name = $request->name;
             $data->loc_province = $request->loc_province;
             $data->loc_regency = $request->loc_regency;
             $data->loc_district = $request->loc_district;
             $data->loc_village = $request->loc_village;
-            $data->address = $request->address;
-            $data->owner = $request->owner;
+            $data->loc_address = $request->loc_address;
             $data->contact = $request->contact;
+            $data->photo = $photo;
+            $data->status = $request->status;
+            $data->is_active = $request->is_active;
             $data->business_sectors_id = $request->business_sectors_id;
+            $data->business_category_id = $request->business_category_id;
+            $data->community_id = $request->community_id;
 
             $process = $data->save();
             if ($process) {
@@ -53,22 +59,32 @@ class BusinessController extends Controller
                 return back()->with('warning','Data Gagal Disimpan');
             }
         }else {
+
+            $nama_file = time()."_".$photo->getClientOriginalName();
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'business_photo';
+            $photo->move($tujuan_upload, $nama_file);
+
             $data = new Business;
+            $data->business_owner_id = $owner->id;
+            $data->owner = $request->owner;
             $data->name = $request->name;
             $data->loc_province = $request->loc_province;
             $data->loc_regency = $request->loc_regency;
             $data->loc_district = $request->loc_district;
             $data->loc_village = $request->loc_village;
-            $data->address = $request->address;
-            $data->owner = $request->owner;
+            $data->loc_address = $request->loc_address;
             $data->contact = $request->contact;
+            $data->photo = $nama_file;
+            $data->status = $request->status;
+            $data->is_active = $request->is_active;
             $data->business_sectors_id = $request->business_sectors_id;
-
-            $business_name = $request->name;
+            $data->business_category_id = $request->business_category_id;
+            $data->community_id = $request->community_id;
 
             $process = $data->save();
             if ($process) {
-                return redirect(url('/dapur/business'))->with('created', $business_name);
+                return redirect(url('/dapur/business'))->with('created', 'Success');
             }else {
                 return back()->with('warning','Data Gagal Disimpan');
             }
@@ -273,9 +289,16 @@ class BusinessController extends Controller
 
     public function show($id)
     {
-        $business = Business::findOrFail($id);
-        $operation = Operation_days::where('business_id', $id)->get();
-        return view('Backend.Business.show', ['business' => $business, 'operation' => $operation ]);
+        $data_check = Business::where('business_owner_id', $id)->first();
+        
+        if ($data_check == null) {
+            return back()->with('empty','Data Kosong');
+        } else {
+            $business = Business::where('business_owner_id', $id)->first();
+            $operation = Operation_days::where('business_id', $id)->get();
+            return view('Backend.Business.show', ['business' => $business, 'operation' => $operation ]);
+        }
+
     }
 
     public function activation(Request $request)

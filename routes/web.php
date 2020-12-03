@@ -109,6 +109,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/business/owner/edit/{id}', [OwnerController::class, 'edit']);
     Route::post('/business/owner/update/{id}', [OwnerController::class, 'update']);
     Route::get('/business/owner/delete/{id}', [OwnerController::class, 'delete']);
+    Route::get('/business/owner/show/{id}', [OwnerController::class, 'show']);
 
 
     Route::post('/getRegenciesFromProvince', function (Request $request) {

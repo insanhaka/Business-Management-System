@@ -44,4 +44,34 @@ class OwnerController extends Controller
         }
 
     }
+
+    public function edit($id)
+    {
+        $owner = Business_owner::findOrFail($id);
+        return view('Backend.Business.edit_owner', ['data' => $owner]);
+    }
+
+    public function update(Request $request, $id)
+    {
+        $owner = Business_owner::findOrFail($id);
+        $process = $owner->update($request->all());
+
+        if ($process) {
+            return redirect(url('/dapur/business'))->with('updated','Data Berhasil Disimpan');
+        } else {
+            return back()->with('warning','Data Gagal Disimpan');
+        }
+    }
+
+    public function delete($id)
+    {
+        $owner = Business_owner::find($id);
+        $process = $owner->delete();
+
+        if ($process) {
+            return redirect(url('/dapur/business'))->with('deleted','Data Berhasil Dihapus');
+        } else {
+            return back()->with('warning','Data Gagal Dihapus');
+        }
+    }
 }

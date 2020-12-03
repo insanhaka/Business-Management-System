@@ -51,10 +51,10 @@
                                 <td>{!!$data->nik!!}</td>
                                 <td>{!!Str::limit($data->ktp_address, 35)!!}</td>
                                 <td>{!!Str::limit($data->domisili_address, 35)!!}</td>
-                                <td><a class="btn btn-success btn-sm" href="{{url()->current().'/show/'.$data->id}}" role="button">View</a></td>
+                                <td><a class="btn btn-success btn-sm" href="{{url('/dapur/business/').'/show/'.$data->id}}" role="button">View</a></td>
                                 <td>
-                                    <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
-                                    <a style="margin-right: 10px;" href="{{url()->current().'/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
+                                    <a style="margin-right: 20px;" href="{{url()->current().'/owner/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
+                                    <a style="margin-right: 10px;" href="{{url()->current().'/owner/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
                                 </td>
                             </tr>
                             @endforeach
@@ -98,6 +98,30 @@
         });
     @endif
 </script>
+
+<script type="text/javascript">
+    @if ($message = Session::get('empty'))
+        bootbox.confirm({
+            message: '<p style="font-weight : bold;">Data usaha masih kosong, Mau menambahkan data usaha ?</p>',
+            buttons: {
+                confirm: {
+                    label: 'Yes',
+                    className: 'btn-success'
+                },
+                cancel: {
+                    label: 'No',
+                    className: 'btn-secondary'
+                }
+            },
+            callback: function (result) {
+                if (result == true) {
+                    window.location.href = "/dapur/business/add";
+                }
+            }
+        });
+    @endif
+</script>
+
 <script type="text/javascript">
     @if ($message = Session::get('updated'))
             iziToast.success({

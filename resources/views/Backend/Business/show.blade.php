@@ -10,15 +10,22 @@
 
     <div class="card">
         <div class="card-header">
-          <h2 class="text-primary">Business Data</h2>
+            <div class="row">
+                <div class="col-md-6">
+                    <h2 class="text-primary">Data Usaha</h2>
+                </div>
+                <div class="col-md-6 text-right">
+                    <a class="btn btn-warning" href="/dapur/business/edit/{!!$business->id!!}" role="button">Perbarui Data</a>
+                </div>
+            </div>
         </div>
         <div class="card-body">
             <div class="row justify-content-md-center">
                 <div class="col-md-4">
-                    @if (empty($business->photo->title))
+                    @if (empty($business->photo))
                     <img src="{{asset('assets/img/no-image.jpg')}}" class="img-fluid" alt="Responsive image">
                     @else
-                    <img src="{{asset('business_pictures/'.$business->photo->title.'')}}" class="img-fluid" alt="Responsive image">
+                    <img src="{{asset('business_photo/'.$business->photo.'')}}" class="img-fluid" alt="Responsive image">
                     @endif
                 </div>
                 <div class="col-md-7">
@@ -26,24 +33,41 @@
                         <table class="table table-sm">
                             <tbody>
                             <tr>
-                                <td style="font-weight: bold">Business Name</td>
+                                <td style="font-weight: bold">Nama Usaha</td>
                                 <td>:</td>
                                 <td>{!!$business->name!!}</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Owner</td>
+                                <td style="font-weight: bold">Pemilik</td>
                                 <td>:</td>
                                 <td>{!!$business->owner!!}</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Address</td>
+                                <td style="font-weight: bold">Alamat</td>
                                 <td>:</td>
-                                <td>{!!wordwrap($business->address,30,"<br>\n")!!}</td>
+                                <td>{!!wordwrap($business->loc_address,30,"<br>\n")!!}</td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Contact</td>
+                                <td style="font-weight: bold">Kontak</td>
                                 <td>:</td>
                                 <td>{!!$business->contact!!}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Jenis Usaha</td>
+                                <td>:</td>
+                                <td>{!!$business->sector->name!!}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Kelompok / Paguyuban</td>
+                                <td>:</td>
+                                <td>{!!$business->community->name!!}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Status</td>
+                                <td>:</td>
+                                @if ($business->status === 'verif')
+                                <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="30"></td> 
+                                @endif
                             </tr>
                             <tr>
                                 <td style="font-weight: bold">Is active?</td>
@@ -67,18 +91,18 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="table-responsive" style="width: 60%">
+                    <div class="table-responsive" style="width: 70%">
                         <table class="table table-sm" style="margin-top: 2%">
                             <tbody>
                             <tr>
                                 <td></td>
-                                <td style="font-weight: bold">Operation Time</td>
+                                <td style="font-weight: bold">Jadwal Operasional</td>
                                 <td></td>
                             </tr>
                             <tr>
-                                <td style="font-weight: bold">Days</td>
-                                <td style="font-weight: bold">Open</td>
-                                <td style="font-weight: bold">Close</td>
+                                <td style="font-weight: bold">Hari</td>
+                                <td style="font-weight: bold">Jam Buka</td>
+                                <td style="font-weight: bold">Jam Tutup</td>
                             </tr>
                             @foreach ($operation as $item)
                             <tr>
