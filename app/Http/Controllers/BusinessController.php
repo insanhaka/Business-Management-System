@@ -7,7 +7,6 @@ use App\Models\Business;
 use App\Models\Sector;
 use App\Models\Community;
 use App\Models\Business_category;
-use App\Models\Business_picture;
 use App\Models\Business_owner;
 use App\Models\Operation_days;
 use Illuminate\Support\Str;
@@ -96,12 +95,15 @@ class BusinessController extends Controller
     {
         $business = Business::findOrFail($id);
         $sector = Sector::all();
-        return view('Backend.Business.edit', ['data' => $business, 'sectors' => $sector ]);
+        $community = Community::all();
+        $category = Business_category::all();
+        $owner = Business_owner::where('id', $business->business_owner_id)->first();
+        return view('Backend.Business.edit', ['data' => $business, 'sector' => $sector, 'community' => $community, 'category' => $category, 'owner' => $owner ]);
     }
 
     public function update(Request $request, $id)
     {
-        $operation = Operation_days::where('business_id', $id)->get();
+        $operation = Operation_days::where('business_id', $id)->first();
         if ($operation == null) {
 
             if(in_array('senin', $request->get('days'))){
@@ -221,54 +223,61 @@ class BusinessController extends Controller
             }
         }
 
-        $files = $request->file('gambar');
+        $owner = Business_owner::where('nik', $request->nik)->first();
+        $photo = $request->file('photo');
 
-        $business = Business::findOrFail($id);
-        $business->name = $request->name;
-        $business->loc_province = $request->loc_province;
-        $business->loc_regency = $request->loc_regency;
-        $business->loc_district = $request->loc_district;
-        $business->loc_village = $request->loc_village;
-        $business->address = $request->address;
-        $business->owner = $request->owner;
-        $business->contact = $request->contact;
-        $business->business_sectors_id = $request->business_sectors_id;
-        $business_update = $business->save();
+        if ($photo == null) {
+            $data = new Business;
+            $data->business_owner_id = $owner->id;
+            $data->owner = $request->owner;
+            $data->name = $request->name;
+            $data->loc_province = $request->loc_province;
+            $data->loc_regency = $request->loc_regency;
+            $data->loc_district = $request->loc_district;
+            $data->loc_village = $request->loc_village;
+            $data->loc_address = $request->loc_address;
+            $data->contact = $request->contact;
+            $data->photo = $photo;
+            $data->status = $request->status;
+            $data->is_active = $request->is_active;
+            $data->business_sectors_id = $request->business_sectors_id;
+            $data->business_category_id = $request->business_category_id;
+            $data->community_id = $request->community_id;
 
-        if ($files == null) {
-            if ($business_update) {
-                return redirect(url('/dapur/business'))->with('updated','Data Berhasil Disimpan');
-            } else {
+            $process = $data->save();
+            if ($process) {
+                return redirect(url('/dapur/business'))->with('created', 'Success');
+            }else {
                 return back()->with('warning','Data Gagal Disimpan');
             }
-        }else{
-            $pict = Business_picture::where('business_id', $id)->get();
-            if ($pict == null) {
-                foreach ($files as $value) {
-                    $nama_file = time()."_".$value->getClientOriginalName();
-                    $tujuan_upload = 'business_pictures';
-                    $value->move($tujuan_upload,$nama_file);
-                    $pict_proses = Business_picture::create([
-                        'title' => $nama_file,
-                        'business_id' => $id
-                    ]);
-                }
-            }else{
-                Business_picture::where('business_id', $id)->delete();
-                foreach ($files as $value) {
-                    $nama_file = time()."_".$value->getClientOriginalName();
-                    $tujuan_upload = 'business_pictures';
-                    $value->move($tujuan_upload,$nama_file);
-                    $pict_proses = Business_picture::create([
-                        'title' => $nama_file,
-                        'business_id' => $id
-                    ]);
-                }
-            }
+        }else {
 
-            if ($business_update && $pict_proses) {
-                return redirect(url('/dapur/business'))->with('updated','Data Berhasil Disimpan');
-            } else {
+            $nama_file = time()."_".$photo->getClientOriginalName();
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'business_photo';
+            $photo->move($tujuan_upload, $nama_file);
+
+            $data = new Business;
+            $data->business_owner_id = $owner->id;
+            $data->owner = $request->owner;
+            $data->name = $request->name;
+            $data->loc_province = $request->loc_province;
+            $data->loc_regency = $request->loc_regency;
+            $data->loc_district = $request->loc_district;
+            $data->loc_village = $request->loc_village;
+            $data->loc_address = $request->loc_address;
+            $data->contact = $request->contact;
+            $data->photo = $nama_file;
+            $data->status = $request->status;
+            $data->is_active = $request->is_active;
+            $data->business_sectors_id = $request->business_sectors_id;
+            $data->business_category_id = $request->business_category_id;
+            $data->community_id = $request->community_id;
+
+            $process = $data->save();
+            if ($process) {
+                return redirect(url('/dapur/business'))->with('created', 'Success');
+            }else {
                 return back()->with('warning','Data Gagal Disimpan');
             }
         }
@@ -290,7 +299,7 @@ class BusinessController extends Controller
     public function show($id)
     {
         $data_check = Business::where('business_owner_id', $id)->first();
-        
+
         if ($data_check == null) {
             return back()->with('empty','Data Kosong');
         } else {

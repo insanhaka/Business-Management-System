@@ -22,4 +22,9 @@ class Business_owner extends Model
             $model->updated_by = \Auth::user()->username;
         });
     }
+
+    public function business()
+    {
+        return $this->hasMany('App\Models\Business', 'business_owner_id', 'id');
+    }
 }

@@ -23,11 +23,6 @@ class Business extends Model
         });
     }
 
-    public function photo()
-    {
-        return $this->hasOne('App\Models\Business_picture', 'business_id', 'id');
-    }
-
     public function sector()
     {
         return $this->belongsTo('App\Models\Sector', 'business_sectors_id', 'id');
@@ -36,5 +31,10 @@ class Business extends Model
     public function community()
     {
         return $this->belongsTo('App\Models\Community', 'community_id', 'id');
+    }
+
+    public function owner()
+    {
+        return $this->belongsTo('App\Models\Business_owner', 'business_owner_id', 'id');
     }
 }

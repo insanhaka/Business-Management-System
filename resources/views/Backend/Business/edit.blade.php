@@ -19,30 +19,57 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Business Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Business sector's name" value="{!!$data->name!!}">
+                                <label for="exampleFormControlInput1">NIK Pemilik</label>
+                                <input type="text" class="form-control" id="nik" name="nik" placeholder="Owner NIK" value="{!!$owner->nik!!}">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Owner Name</label>
+                                <label for="exampleFormControlInput1">Nama Pemilik</label>
                                 <input type="text" class="form-control" id="owner" name="owner" placeholder="Business owner name" value="{!!$data->owner!!}">
                             </div>
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-md-6">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Contact</label>
-                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx" value="{!!$data->contact!!}">
+                                <label for="exampleFormControlInput1">Nama Usaha</label>
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Business name" value="{!!$data->name!!}">
                             </div>
                         </div>
-                        <div class="col-md-6">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Business Sector</label>
-                                <select class="form-control" name="business_sectors_id">
-                                    @foreach ( $sectors as $sector )
-                                    <option value="{!!$sector->id!!}"{{ ( $data->business_sectors_id == $sector->id ) ? ' selected' : '' }}>{!! $sector->name !!}</option>
+                                <label for="exampleFormControlInput1">Status Verifikasi</label>
+                                <select class="form-control" name="status">
+                                    <option value="">-- Select Status --</option>
+                                    <option value="verif">Verify</option>
+                                    <option value="notverif">Not Verify</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Ikut Dalam Kelompok/Paguyuban ?</label>
+                                <select class="form-control" name="community" id="menu-type" onchange="statuskelompok()">
+                                    <option value="">-- Select --</option>
+                                    <option value="kelompok">Ya</option>
+                                    <option value="individu">Tidak</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row select-formhide" id="select_parent">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Nama Kelompok/Paguyuban</label>
+                                <select class="form-control" name="community_id">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($community as $item)
+                                    <option value="{!! $item->id !!}">{!! $item->name !!}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -51,14 +78,46 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Province )</label>
+                                <label for="exampleFormControlInput1">Jenis Usaha</label>
+                                <select class="form-control" name="business_sectors_id">
+                                    <option value="">-- Select Business Sector --</option>
+                                    @foreach ($sector as $data)
+                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Kategori Usaha</label>
+                                <select class="form-control" name="business_category_id">
+                                    <option value="">-- Select Business Category --</option>
+                                    @foreach ($category as $data)
+                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">No. Telfon</label>
+                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Provinsi )</label>
                                 <select class="form-control" id="province" name="loc_province">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Regency )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Kabupaten/Kota )</label>
                                 <select class="form-control" id="regency" name="loc_regency">
                                 </select>
                             </div>
@@ -67,14 +126,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( District )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Kecamatan )</label>
                                 <select class="form-control" id="district" name="loc_district">
                                 </select>
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Address ( Village )</label>
+                                <label for="exampleFormControlInput1">Alamat Usaha ( Desa )</label>
                                 <select class="form-control" id="village" name="loc_village">
                                 </select>
                             </div>
@@ -83,8 +142,8 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Details Address</label>
-                                <input type="text" class="form-control" id="address" name="address" placeholder="Details business address" value="{!!$data->address!!}">
+                                <label for="exampleFormControlInput1">Details alamat Usaha</label>
+                                <input type="text" class="form-control" id="address" name="loc_address" placeholder="Details business address" value="{!!$data->loc_address!!}">
                             </div>
                         </div>
                     </div>
@@ -218,15 +277,15 @@
             </form>
         </div>
     </div>
-    
-</div>    
+
+</div>
 @endsection
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
 
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#business").addClass("active");
     });
 </script>
@@ -238,7 +297,7 @@
 </script>
 
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
 
         const url = '/provinsi-kota-kecamatan-kelurahan.json';
 

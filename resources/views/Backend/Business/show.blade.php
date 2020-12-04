@@ -60,13 +60,19 @@
                             <tr>
                                 <td style="font-weight: bold">Kelompok / Paguyuban</td>
                                 <td>:</td>
+                                @if ($business->community_id == null)
+                                <td>-----------</td>
+                                @else
                                 <td>{!!$business->community->name!!}</td>
+                                @endif
                             </tr>
                             <tr>
                                 <td style="font-weight: bold">Status</td>
                                 <td>:</td>
                                 @if ($business->status === 'verif')
-                                <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="30"></td> 
+                                <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="30"></td>
+                                @else
+                                <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/minus.png')}}" class="img-fluid" alt="Responsive image" width="30"></td>
                                 @endif
                             </tr>
                             <tr>
@@ -118,15 +124,15 @@
             </div>
         </div>
     </div>
-    
-</div>    
+
+</div>
 @endsection
 
 @section('js')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
 
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#business").addClass("active");
     });
 </script>
