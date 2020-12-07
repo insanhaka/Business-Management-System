@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Business_owner;
 use Illuminate\Support\Str;
 use App\Models\Community;
+use App\Models\Business;
+use App\Models\Operation_days;
 
 class OwnerController extends Controller
 {
@@ -73,5 +75,19 @@ class OwnerController extends Controller
         } else {
             return back()->with('warning','Data Gagal Dihapus');
         }
+    }
+
+    public function show($id)
+    {
+        $owner = Business_owner::findOrFail($id);
+        $data_check = Business::where('business_owner_id', $id)->first();
+
+        if ($data_check == null) {
+            return back()->with('empty','Data Kosong');
+        } else {
+            $business = Business::where('business_owner_id', $id)->get();
+            return view('Backend.Business.show_owner', ['business' => $business, 'owner' => $owner ]);
+        }
+
     }
 }

@@ -89,8 +89,8 @@
                                 <label for="exampleFormControlInput1">Status Verifikasi</label>
                                 <select class="form-control" name="status">
                                     <option value="">-- Select Status --</option>
-                                    <option value="verif">Verify</option>
-                                    <option value="notverif">Not Verify</option>
+                                    <option value="Verify">Verify</option>
+                                    <option value="Not Verif">Not Verify</option>
                                 </select>
                             </div>
                         </div>

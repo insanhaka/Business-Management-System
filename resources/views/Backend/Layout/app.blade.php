@@ -85,6 +85,16 @@
       $('#datatable').DataTable();
     } );
   </script>
+  <script>
+    $(document).ready(function() {
+      $('#datatable-owner').DataTable();
+    } );
+  </script>
+  <script>
+    $(document).ready(function() {
+      $('#datatable-business').DataTable();
+    } );
+  </script>
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <script src="{{ asset('assets/js/tower-file-input.js') }}"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/5.4.0/bootbox.min.js"></script>

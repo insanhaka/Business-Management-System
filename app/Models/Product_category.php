@@ -22,4 +22,9 @@ class Product_category extends Model
             $model->updated_by = \Auth::user()->username;
         });
     }
+
+    public function product()
+    {
+        return $this->hasMany('App\Models\Product', 'product_categories_id', 'id');
+    }
 }

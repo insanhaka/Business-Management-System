@@ -23,3 +23,4 @@ use App\Http\Controllers\ApiController;
 Route::get('data-user', [ApiController::class, 'datauser']);
 Route::get('data-business', [ApiController::class, 'databusiness']);
 Route::get('data-owner', [ApiController::class, 'dataowner']);
+Route::get('data-product-category', [ApiController::class, 'dataproductcategory']);

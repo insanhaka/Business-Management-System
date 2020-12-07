@@ -16,8 +16,6 @@ class CreateProductCategoriesTable extends Migration
         Schema::create('product_categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->unsignedBigInteger('business_id')->nullable();
-            $table->foreign('business_id')->references('id')->on('business')->onDelete('cascade');
             $table->string('created_by', 50);
             $table->string('updated_by', 50)->nullable();
             $table->timestamps();

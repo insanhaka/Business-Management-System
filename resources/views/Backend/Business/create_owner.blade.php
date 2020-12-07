@@ -11,7 +11,7 @@
 
     <div class="card">
         <div class="card-header">
-          <h2 class="text-primary">Add Business Owner Data</h2>
+          <h2 class="text-primary">Tambah Data Pemilik Usaha</h2>
         </div>
         <div class="card-body">
             <form method="POST" action="/dapur/business/owner/create" enctype="multipart/form-data">

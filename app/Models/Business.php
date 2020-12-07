@@ -37,4 +37,9 @@ class Business extends Model
     {
         return $this->belongsTo('App\Models\Business_owner', 'business_owner_id', 'id');
     }
+
+    public function product()
+    {
+        return $this->hasMany('App\Models\Product', 'business_id', 'id');
+    }
 }

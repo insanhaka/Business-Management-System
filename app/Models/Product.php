@@ -22,4 +22,14 @@ class Product extends Model
             $model->updated_by = \Auth::user()->username;
         });
     }
+
+    public function category()
+    {
+        return $this->belongsTo('App\Models\Product_category', 'product_categories_id', 'id');
+    }
+
+    public function business()
+    {
+        return $this->belongsTo('App\Models\Business', 'business_id', 'id');
+    }
 }

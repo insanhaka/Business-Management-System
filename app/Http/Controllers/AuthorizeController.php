@@ -27,6 +27,7 @@ class AuthorizeController extends Controller
             }
             else
             {
+                Auth::logout();
                 return redirect()->route('notactive');
             }
         }

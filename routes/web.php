@@ -17,6 +17,8 @@ use App\Http\Controllers\BusinessController;
 use App\Http\Controllers\OwnerController;
 use App\Http\Controllers\BusinesscategoryController;
 use App\Http\Controllers\CommunityController;
+use App\Http\Controllers\ProductcategoryController;
+use App\Http\Controllers\ProductController;
 
 
 
@@ -88,6 +90,13 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::post('/community/update/{id}', [CommunityController::class, 'update']);
     Route::get('/community/delete/{id}', [CommunityController::class, 'delete']);
 
+    Route::get('/product-category', [ProductcategoryController::class, 'view'])->name('product-category');
+    Route::get('/product-category/add', [ProductcategoryController::class, 'add']);
+    Route::post('/product-category/create', [ProductcategoryController::class, 'create']);
+    Route::get('/product-category/edit/{id}', [ProductcategoryController::class, 'edit']);
+    Route::post('/product-category/update/{id}', [ProductcategoryController::class, 'update']);
+    Route::get('/product-category/delete/{id}', [ProductcategoryController::class, 'delete']);
+
     Route::get('/business-category', [BusinesscategoryController::class, 'view'])->name('business-category');
     Route::get('/business-category/add', [BusinesscategoryController::class, 'add']);
     Route::post('/business-category/create', [BusinesscategoryController::class, 'create']);
@@ -110,6 +119,16 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::post('/business/owner/update/{id}', [OwnerController::class, 'update']);
     Route::get('/business/owner/delete/{id}', [OwnerController::class, 'delete']);
     Route::get('/business/owner/show/{id}', [OwnerController::class, 'show']);
+
+    Route::get('/product/from-business/{id}', [ProductController::class, 'addfrom']);
+    Route::get('/product', [ProductController::class, 'view'])->name('product');
+    Route::get('/product/add', [ProductController::class, 'add']);
+    Route::post('/product/create', [ProductController::class, 'create']);
+    Route::get('/product/edit/{id}', [ProductController::class, 'edit']);
+    Route::post('/product/update/{id}', [ProductController::class, 'update']);
+    Route::get('/product/delete/{id}', [ProductController::class, 'delete']);
+    Route::get('/product/show/{id}', [ProductController::class, 'show']);
+    Route::post('/product/activation', [ProductController::class, 'activation']);
 
 
     Route::post('/getRegenciesFromProvince', function (Request $request) {

@@ -16,8 +16,7 @@ class CreateProductPhotosTable extends Migration
         Schema::create('product_photos', function (Blueprint $table) {
             $table->id();
             $table->string('title')->nullable();
-            $table->unsignedBigInteger('product_id')->nullable();
-            $table->foreign('product_id')->references('id')->on('products')->onDelete('cascade');
+            $table->char('product_id',15)->nullable();
             $table->timestamps();
         });
     }

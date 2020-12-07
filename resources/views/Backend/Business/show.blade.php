@@ -9,16 +9,20 @@
 <div class="container-fluid" style="margin-top: 3%; margin-bottom: 6%;">
 
     <div class="card">
-        <div class="card-header">
+        <div class="card-body">
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="text-primary">Data Usaha</h2>
+                    <h2 class="text-primary" style="font-weight: bold;">Data Usaha</h2>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a class="btn btn-warning" href="/dapur/business/edit/{!!$business->id!!}" role="button">Perbarui Data</a>
+                    <a style="margin-right: 20px;" href="/dapur/business/edit/{!!$business->id!!}"><i class="fa fa-edit text-warning" style="font-size: 21px;"></i></a>
+                    <a style="margin-right: 10px;" href="/dapur/business/delete/{!!$business->id!!}"><i class="fa fa-trash text-danger" style="font-size: 21px;"></i></a>
                 </div>
             </div>
         </div>
+    </div>
+
+    <div class="card">
         <div class="card-body">
             <div class="row justify-content-md-center">
                 <div class="col-md-4">
@@ -69,7 +73,7 @@
                             <tr>
                                 <td style="font-weight: bold">Status</td>
                                 <td>:</td>
-                                @if ($business->status === 'verif')
+                                @if ($business->status === 'Verify')
                                 <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="30"></td>
                                 @else
                                 <td>{!!$business->status!!} &nbsp; <img src="{{asset('assets/img/icons/minus.png')}}" class="img-fluid" alt="Responsive image" width="30"></td>
@@ -97,26 +101,32 @@
                             </tbody>
                         </table>
                     </div>
-                    <div class="table-responsive" style="width: 70%">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <h5 class="text-center" style="font-weight: bold; margin-top: 3%">Waktu Operasional</h5>
+                    <div class="table-responsive" style="margin-top: -1%">
                         <table class="table table-sm" style="margin-top: 2%">
                             <tbody>
-                            <tr>
-                                <td></td>
-                                <td style="font-weight: bold">Jadwal Operasional</td>
-                                <td></td>
-                            </tr>
-                            <tr>
-                                <td style="font-weight: bold">Hari</td>
-                                <td style="font-weight: bold">Jam Buka</td>
-                                <td style="font-weight: bold">Jam Tutup</td>
-                            </tr>
-                            @foreach ($operation as $item)
-                            <tr>
-                                <td>{!!$item->days!!}</td>
-                                <td>{!!Str::beforeLast($item->open, ':')!!}</td>
-                                <td>{!!Str::beforeLast($item->close, ':')!!}</td>
-                            </tr>
-                            @endforeach
+                                <tr>
+                                    <td style="font-weight: bold">Hari</td>
+                                    @foreach ($operation as $item)
+                                    <td>{!!$item->days!!}</td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">Jam Buka</td>
+                                    @foreach ($operation as $item)
+                                    <td>{!!Str::beforeLast($item->open, ':')!!}</td>
+                                    @endforeach
+                                </tr>
+                                <tr>
+                                    <td style="font-weight: bold">Jam Tutup</td>
+                                    @foreach ($operation as $item)
+                                    <td>{!!Str::beforeLast($item->close, ':')!!}</td>
+                                    @endforeach
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -135,6 +145,25 @@
     $(document).ready(function() {
         $("#business").addClass("active");
     });
+</script>
+
+<script type="text/javascript">
+    @if ($message = Session::get('updated'))
+            iziToast.success({
+                        title: 'Success',
+                        message: 'Data berhasil diubah',
+                        position: 'topRight'
+                    });
+    @endif
+</script>
+<script type="text/javascript">
+    @if ($message = Session::get('warning'))
+            iziToast.error({
+                        title: 'Failed',
+                        message: 'Data gagal diproses',
+                        position: 'topRight'
+                    });
+    @endif
 </script>
 
 <script>

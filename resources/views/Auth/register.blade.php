@@ -75,7 +75,7 @@
             axios.get('/api/data-user')
             .then(function (response) {
                 // handle success
-                var users = response.data.datausers;
+                var users = response.data.data;
                 for (var i = 0; i < users.length; i++) {
                     dataemail.push(users[i].email);
                     datausername.push(users[i].username);

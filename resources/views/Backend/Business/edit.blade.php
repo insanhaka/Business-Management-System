@@ -2,6 +2,14 @@
 
 @section('css')
 {{-- <link rel="stylesheet" type="text/css" href="{{ asset('assets/css/picktim.css') }}"> --}}
+<style>
+    .select-formhide {
+        display: none;
+    }
+    .select-formshow {
+        display: flex;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -44,12 +52,13 @@
                                 <label for="exampleFormControlInput1">Status Verifikasi</label>
                                 <select class="form-control" name="status">
                                     <option value="">-- Select Status --</option>
-                                    <option value="verif">Verify</option>
-                                    <option value="notverif">Not Verify</option>
+                                    <option value="Verify" {{ $data->status === 'Verify' ? 'selected' : '' }}>Verify</option>
+                                    <option value="Not Verify" {{ $data->status === 'Not Verify' ? 'selected' : '' }}>Not Verify</option>
                                 </select>
                             </div>
                         </div>
                     </div>
+                    @if ($data->community_id == null)
                     <div class="row">
                         <div class="col-md-12">
                             <div class="form-group">
@@ -75,14 +84,41 @@
                             </div>
                         </div>
                     </div>
+                    @else
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Ikut Dalam Kelompok/Paguyuban ?</label>
+                                <select class="form-control" name="community" id="menu-type" onchange="statuskelompok()">
+                                    <option value="">-- Select --</option>
+                                    <option value="kelompok" selected>Ya</option>
+                                    <option value="individu">Tidak</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Nama Kelompok/Paguyuban</label>
+                                <select class="form-control" name="community_id">
+                                    <option value="">-- Select --</option>
+                                    @foreach ($community as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->community_id ? 'selected' : '' }}>{{ $item->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    @endif
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">Jenis Usaha</label>
                                 <select class="form-control" name="business_sectors_id">
                                     <option value="">-- Select Business Sector --</option>
-                                    @foreach ($sector as $data)
-                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @foreach ($sector as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->business_sectors_id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -92,8 +128,8 @@
                                 <label for="exampleFormControlInput1">Kategori Usaha</label>
                                 <select class="form-control" name="business_category_id">
                                     <option value="">-- Select Business Category --</option>
-                                    @foreach ($category as $data)
-                                    <option value="{!!$data->id!!}">{!! $data->name !!}</option>
+                                    @foreach ($category as $item)
+                                    <option value="{{ $item->id }}" {{ $item->id == $data->business_category_id ? 'selected' : '' }}>{{ $item->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
@@ -103,7 +139,7 @@
                         <div class="col-md-12">
                             <div class="form-group">
                                 <label for="exampleFormControlInput1">No. Telfon</label>
-                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx">
+                                <input type="text" class="form-control" id="contact" name="contact" placeholder="Exp : 0877xxxxxxxx" value="{!!$data->contact!!}">
                             </div>
                         </div>
                     </div>
@@ -152,7 +188,7 @@
                             <div class="form-group">
                                 <label for="exampleInput">Upload Business Pictures</label>
                                 <div class="tower-file">
-                                    <input type="file" name="gambar[]" id="demoInput5" multiple />
+                                    <input type="file" name="photo" id="demoInput5" multiple />
                                     <label for="demoInput5" class="btn btn-primary">
                                         <span class="mdi mdi-upload"></span>Select Files
                                     </label>
@@ -167,7 +203,7 @@
                                 <thead>
                                   <tr>
                                     <th scope="col"></th>
-                                    <th scope="col"><h5>Operation Time</h5></th>
+                                    <th scope="col"><h5>Operation Time (*)</h5></th>
                                     <th scope="col"></th>
                                   </tr>
                                 </thead>
@@ -397,5 +433,20 @@
 <script>
     $(".timepicker").picktim({mode: 'h12'});
 </script> --}}
+
+<script>
+    //Script Hide or Show Select Menu Community
+    function statuskelompok() {
+        var i = document.getElementById("menu-type").value;
+        // console.log(i);
+        if(i === "kelompok"){
+            $('#select_parent').removeClass("select-formhide");
+            $('#select_parent').addClass("select-formshow");
+        }else {
+            $('#select_parent').removeClass("select-formshow");
+            $('#select_parent').addClass("select-formhide");
+        }
+    }
+</script>
 
 @endsection
