@@ -7,7 +7,7 @@ use App\Models\User;
 use App\Models\Business_owner;
 use App\Models\Business;
 use App\Models\Product_category;
-use DB;
+use App\Models\Product;
 
 class ApiController extends Controller
 {
@@ -45,6 +45,15 @@ class ApiController extends Controller
         return response()->json([
             'message' => 'success',
             'data' => $product_category
+        ]);
+    }
+
+    public function dataproduct()
+    {
+        $product = Product::all();
+        return response()->json([
+            'message' => 'success',
+            'data' => $product
         ]);
     }
 
