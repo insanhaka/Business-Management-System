@@ -20,8 +20,29 @@ class ProductcategoryController extends Controller
 
     public function create(Request $request)
     {
-        Product_category::create(['name' => $request->name]);
-        return redirect(url('/dapur/product-category'))->with('created','Data Berhasil Disimpan');
+        $create = new Product_category;
+        $create->name = $request->name;
+
+        // menyimpan data file yang diupload ke variabel $file
+        $file = $request->file('icon');
+        if($file == null){
+            $nama_file = "";
+            $create->icon = $nama_file;
+        }else{
+            $nama_file = time()."_".$file->getClientOriginalName();
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'menus_icon';
+            $file->move($tujuan_upload, $nama_file);
+            $create->icon = $nama_file;
+        }
+
+        $process= $create->save();
+        if ($process) {
+            return redirect(url('/dapur/product-category'))->with('created','Data Berhasil Disimpan');
+        } else {
+            return back()->with('warning','Data Gagal Dihapus');
+        }
+
     }
 
     public function edit($id)
@@ -34,12 +55,25 @@ class ProductcategoryController extends Controller
     {
         $product_category = Product_category::findOrFail($id);
         $product_category->name = $request->name;
-        $process = $product_category->save();
 
+        // menyimpan data file yang diupload ke variabel $file
+        $file = $request->file('icon');
+        if($file == null){
+            $nama_file = "";
+            $product_category->icon = $nama_file;
+        }else{
+            $nama_file = time()."_".$file->getClientOriginalName();
+            // isi dengan nama folder tempat kemana file diupload
+            $tujuan_upload = 'menus_icon';
+            $file->move($tujuan_upload, $nama_file);
+            $product_category->icon = $nama_file;
+        }
+
+        $process= $product_category->save();
         if ($process) {
-            return redirect(url('/dapur/product-category'))->with('updated','Data Berhasil Disimpan');
+            return redirect(url('/dapur/product-category'))->with('created','Data Berhasil Disimpan');
         } else {
-            return back()->with('warning','Data Gagal Disimpan');
+            return back()->with('warning','Data Gagal Dihapus');
         }
     }
 

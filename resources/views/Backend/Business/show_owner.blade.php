@@ -20,11 +20,15 @@
         </div>
         <div class="card-body">
             <div class="row justify-content-md-center">
-                <div class="col-md-4">
+                <div class="col-md-5">
                     @if (empty($owner->photo))
+                    <center>
                     <img src="{{asset('assets/img/no-image.jpg')}}" class="img-fluid" alt="Responsive image">
+                    </center>
                     @else
-                    <img src="{{asset('owner_photo/'.$owner->photo.'')}}" class="img-fluid" alt="Responsive image">
+                    <center>
+                    <img src="{{asset('profile_pictures/'.$owner->photo.'')}}" class="img-fluid" alt="Responsive image" width="300">
+                    </center>
                     @endif
                 </div>
                 <div class="col-md-7">
@@ -50,6 +54,17 @@
                                 <td style="font-weight: bold">Alamat Domisili</td>
                                 <td>:</td>
                                 <td>{!!wordwrap($owner->domisili_address,30,"<br>\n")!!}</td>
+                            </tr>
+                            <tr>
+                                <td style="font-weight: bold">Bersedia Taat Protokol Kesehatan</td>
+                                <td>:</td>
+                                @if ($owner->attachment == null)
+                                <td>Belum <i class="fa fa-times-circle text-danger" style="font-size: 21px;"></i></td>
+                                @else
+                                <td>
+                                    <a href="{{url('/agreement_file').'/'.$owner->attachment}}" target="_blank" style="color: #4b6584; text-decoration: none">Sudah <i class="fa fa-check-circle text-success" style="font-size: 21px;"></i></a>
+                                </td>
+                                @endif
                             </tr>
                             </tbody>
                         </table>

@@ -3,6 +3,14 @@
 @section('css')
 <link href="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.css" rel="stylesheet">
 
+<style>
+    .select-formhide {
+        display: none;
+    }
+    .select-formshow {
+        display: flex;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -135,6 +143,40 @@
                     </div>
                     <div class="row">
                         <div class="col-md-12">
+                            <p style="color: #546de5; font-weight: bold;">Lampiran</p>
+                            <hr style="margin-top: -1%; border-color: #546de5;">
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleFormControlInput1">Bersedia Menerapkan Protokol Kesehatan ?</label>
+                                <select class="form-control" name="prokes" id="menu-type" onchange="statusProkes()">
+                                    <option value="">-- Select --</option>
+                                    <option value="Ya">Ya</option>
+                                    <option value="Belum">Belum</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row select-formhide" id="select_parent">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="exampleInput">Upload Bukti</label>
+                                <div class="tower-file">
+                                    <input type="file" name="attachment" id="demoInput5" />
+                                    <label for="demoInput5" class="btn btn-primary">
+                                        <span class="mdi mdi-upload"></span>Select Files
+                                    </label>
+                                    <button type="button" class="tower-file-clear btn btn-secondary align-top">
+                                        Clear
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
                             <div class="form-group" style="float: right; margin-top: 20px;">
                                 <input class="btn btn-primary" type="submit" value="Save">
                             </div>
@@ -163,6 +205,21 @@
     $('#demoInput5').fileInput({
         iconClass: 'mdi mdi-fw mdi-upload'
     });
+</script>
+
+<script>
+    //Script Hide or Show Select Menu Community
+    function statusProkes() {
+        var i = document.getElementById("menu-type").value;
+        // console.log(i);
+        if(i === "Ya"){
+            $('#select_parent').removeClass("select-formhide");
+            $('#select_parent').addClass("select-formshow");
+        }else {
+            $('#select_parent').removeClass("select-formshow");
+            $('#select_parent').addClass("select-formhide");
+        }
+    }
 </script>
 
 <script>
@@ -202,7 +259,7 @@
             document.getElementById("domisili-address").value = addr;
 
         } else {
-            
+
             valprov.empty();
             valprov.append('<option disabled>-- Select Regency --</option>');
             valprov.prop('selectedIndex', 0);

@@ -1,7 +1,7 @@
 @extends('Backend.Layout.app')
 
 @section('css')
-    
+
 @endsection
 
 @section('content')
@@ -39,6 +39,7 @@
                                 <th>NIK</th>
                                 <th>Alamat KTP</th>
                                 <th>Alamat Domisili</th>
+                                <th>Prokes</th>
                                 <th>Detail</th>
                                 <th>Action</th>
                             </tr>
@@ -51,6 +52,13 @@
                                 <td>{!!$data->nik!!}</td>
                                 <td>{!!Str::limit($data->ktp_address, 35)!!}</td>
                                 <td>{!!Str::limit($data->domisili_address, 35)!!}</td>
+                                @if ($data->attachment == null)
+                                <td><i class="fa fa-times-circle text-danger" style="font-size: 21px;"></i></td>
+                                @else
+                                <td>
+                                    <a href="{{url('/agreement_file').'/'.$data->attachment}}" target="_blank"><i class="fa fa-check-circle text-success" style="font-size: 21px;"></i></a>
+                                </td>
+                                @endif
                                 <td><a class="btn btn-success btn-sm" href="{{url()->current().'/owner/show/'.$data->id}}" role="button">View</a></td>
                                 <td>
                                     <a style="margin-right: 20px;" href="{{url()->current().'/owner/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
@@ -99,13 +107,13 @@
             </div>
         </div>
     </div>
-    
-</div>      
+
+</div>
 @endsection
 
 @section('js')
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#business").addClass("active");
     });
 </script>

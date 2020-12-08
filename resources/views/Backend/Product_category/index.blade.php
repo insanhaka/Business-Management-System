@@ -1,7 +1,7 @@
 @extends('Backend.Layout.app')
 
 @section('css')
-    
+
 @endsection
 
 @section('content')
@@ -25,6 +25,7 @@
                     <tr>
                         <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
                         <th>Name</th>
+                        <th>Icon</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -33,6 +34,7 @@
                     <tr>
                         <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
                         <td>{!!$data->name!!}</td>
+                        <td><img src="{{asset('menus_icon/'.$data->icon)}}" class="img-fluid" alt="Responsive image" width="50"></td>
                         <td>
                             <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
                             <a style="margin-right: 10px;" href="{{url()->current().'/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
@@ -43,13 +45,13 @@
             </table>
         </div>
     </div>
-    
-</div>      
+
+</div>
 @endsection
 
 @section('js')
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#product-category").addClass("active");
     });
 </script>

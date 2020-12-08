@@ -32,6 +32,7 @@ class CreateBusinessOwnersTable extends Migration
             $table->string('ktp_address');
 
             $table->string('photo')->nullable();
+            $table->string('attachment')->nullable();
 
             $table->string('created_by', 50);
             $table->string('updated_by', 50)->nullable();
