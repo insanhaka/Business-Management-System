@@ -77,6 +77,7 @@
                                 <th>Nama</th>
                                 <th>Pemilik</th>
                                 <th>Alamat</th>
+                                <th>Paguyuban</th>
                                 <th>Status</th>
                                 <th>Detail</th>
                                 <th>Action</th>
@@ -88,7 +89,12 @@
                                 <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
                                 <td>{!!$data->name!!}</td>
                                 <td>{!!$data->owner!!}</td>
-                                <td>{!!Str::limit($data->loc_address, 35)!!}</td>
+                                <td>{!!Str::limit($data->loc_address, 40)!!}</td>
+                                @if ($data->community_id == null)
+                                <td>-----</td>
+                                @else
+                                <td>{!!$data->community->name!!}</td>
+                                @endif
                                 @if ($data->status === 'Verify')
                                 <td>{!!$data->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="20"></td>
                                 @else
