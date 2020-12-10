@@ -8,9 +8,56 @@ use Illuminate\Support\Str;
 use App\Models\Community;
 use App\Models\Business;
 use App\Models\Operation_days;
+use DataTables;
 
 class OwnerController extends Controller
 {
+    public function getOwnerDataServerSide()
+    {
+       
+        $data = Business_owner::query();
+        return Datatables::eloquent($data)
+            ->orderColumn('name', function ($query, $order) {
+                $query->orderBy('created_at', 'desc');
+            })
+            ->addColumn('checkbox', function ($data) {
+                $checkbox = '<td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox'.$data->id.'" name="cek[]" value="'.$data->id.'"></td>' ;
+                return $checkbox;
+            })
+            ->addColumn('nik', function ($data) {
+                $nik = '<td>'.$data->nik.'</td>';
+                return $nik;
+            })
+            ->addColumn('ktp_addr', function ($data) {
+                $ktp_addr = '<td>'.Str::limit($data->ktp_address, 35).'</td>';
+                return $ktp_addr;
+            })
+            ->addColumn('dom_addr', function ($data) {
+                $dom_addr = '<td>'.Str::limit($data->domisili_address, 35).'</td>';
+                return $dom_addr;
+            })
+            ->addColumn('prokes', function ($data) {
+                if($data->attachment == null){
+                    $prokes = '<td><i class="fa fa-times-circle text-danger" style="font-size: 21px;"></i></td>';
+                }else{
+                    $prokes = '<td><a href="'.url('/agreement_file').'/'.$data->attachment.'" target="_blank"><i class="fa fa-check-circle text-success" style="font-size: 21px;"></i></a></td>';
+                }
+                return $prokes;
+            })
+            ->addColumn('details', function ($data) {
+                $details = '<td><a class="btn btn-success btn-sm" href="'.url()->current().'/owner/show/'.$data->id.'" role="button">View</a></td>';
+                return $details;
+            })
+            ->addColumn('action', function ($data) {
+                $action = '<td>
+                                <a style="margin-right: 20px;" href="'.url()->current().'/owner/edit/'.$data->id.'"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
+                                <a style="margin-right: 10px;" href="'.url()->current().'/owner/delete/'.$data->id.'"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
+                            </td>';
+                return $action;
+            })->rawColumns(['checkbox','name','nik','ktp_addr', 'dom_addr', 'prokes', 'details', 'action'])
+            ->make(true);
+    }
+
 
     public function add()
     {

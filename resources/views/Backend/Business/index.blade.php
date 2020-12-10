@@ -31,7 +31,9 @@
             </ul>
             <div class="tab-content" id="myTabContent" style="padding-top: 3%">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <table id="datatable-owner" class="table table-striped table-bordered display responsive nowrap" style="width:100%">
+                    <form action="/dapur/business/owner/delete-all" method="POST">
+                    @csrf
+                    <table id="datatable-owner" class="table table-striped table-bordered display responsive nowrap" style="width:100%" id="owner-tableserverside">
                         <thead class="bg-primary" style="color: #ffff;">
                             <tr>
                                 <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
@@ -45,9 +47,9 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($owner as $data)
+                            {{-- @foreach ($owner as $data)
                             <tr>
-                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
+                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox{!!$data->id!!}" name="cek[]" value="{!! $data->id !!}"></td>
                                 <td>{!!$data->name!!}</td>
                                 <td>{!!$data->nik!!}</td>
                                 <td>{!!Str::limit($data->ktp_address, 35)!!}</td>
@@ -65,11 +67,19 @@
                                     <a style="margin-right: 10px;" href="{{url()->current().'/owner/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
                                 </td>
                             </tr>
-                            @endforeach
+                            @endforeach --}}
                         </tbody>
                     </table>
+                    <div class="row" style="margin-top: 3%;">
+                        <div class="col-md-12" style="padding-bottom: 1%;">
+                            <input class="btn btn-danger" type="submit" value="Hapus Yang Terpilih">
+                        </div>
+                    </div>
+                    </form>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <form action="/dapur/business/generate-qrcode" method="POST">
+                        @csrf
                     <table id="datatable-business" class="table table-striped table-bordered display responsive nowrap" style="width:100%">
                         <thead class="bg-primary" style="color: #ffff;">
                             <tr>
@@ -86,7 +96,7 @@
                         <tbody>
                             @foreach ($business as $data)
                             <tr>
-                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
+                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox{!!$data->id!!}" name="cek[]" value="{!! $data->id !!}"></td>
                                 <td>{!!$data->name!!}</td>
                                 <td>{!!$data->owner!!}</td>
                                 <td>{!!Str::limit($data->loc_address, 40)!!}</td>
@@ -109,6 +119,12 @@
                             @endforeach
                         </tbody>
                     </table>
+                    <div class="row" style="margin-top: 3%;">
+                        <div class="col-md-12" style="padding-bottom: 1%;">
+                            <input class="btn btn-success" type="submit" value="Generate QRcode">
+                        </div>
+                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -196,6 +212,71 @@
                         position: 'topRight'
                     });
     @endif
+</script>
+
+@foreach ($owner as $data)
+    <script>
+        $('#cekbox{!!$data->id!!}').click(function(event) {
+            var favorite = [];
+            $.each($("input[name='cek[]']:checked"), function(){
+                favorite.push($(this).val());
+            });
+            // alert("My favourite sports are: " + favorite.join(", "));
+            var terpilih = favorite.length;
+            console.log(terpilih);
+        });
+    </script>
+@endforeach
+
+<script type="text/javascript">
+    $(document).ready(function() {
+
+        console.log("{!!url('/dapur')!!}" + "/business/owner/getdataowner-serverside");
+
+            var table = $('#owner-tableserverside').DataTable({
+                processing: true,
+                serverSide: true,
+                ajax: "{!!url('/dapur')!!}" + "/business/owner/getdataowner-serverside",
+                columnDefs: [{
+                    searchable: false,
+                    orderable: false,
+                    targets: 0,
+                    checkboxes: {
+                                    'selectRow': true,
+                                }
+                }],
+                select: {
+                    style: 'multi',
+                },
+                order: [
+                    [1, 'asc']
+                ],
+                columns: [
+                    {data: 'checkbox',name: 'checkbox', searchable: false, orderable: false},
+                    {data: 'name',name: 'name'},
+                    {data: 'nik',name: 'nik'},
+                    {data: 'ktp_addr',name: 'ktp_addr'},
+                    {data: 'dom_addr',name: 'dom_addr'},
+                    {data: 'prokes', name: 'prokes'},
+                    {data: 'details', name: 'details'},
+                    {data: 'action',name: 'action'},
+                ]
+            });
+
+            // Handle form submission event 
+            $('#generate').on('click', function(e){
+                
+                var favorite = [];
+                $.each($("input[name='cek[]']:checked"), function(){
+                    favorite.push($(this).val());
+                });
+
+                window.location.href = '/admin/business/'+favorite+'/generate';
+
+
+            });   
+
+    });
 </script>
 
 @endsection
