@@ -20,10 +20,9 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="datatable" class="table table-striped table-bordered display responsive nowrap" style="width:100%">
+            <table id="datatable" class="table table-striped table-sm table-bordered display responsive nowrap" style="width:100%">
                 <thead class="bg-primary" style="color: #ffff;">
                     <tr>
-                        <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
                         <th>Nama Kelompok</th>
                         <th>Alamat</th>
                         <th>Ketua</th>
@@ -33,7 +32,6 @@
                 <tbody>
                     @foreach ($community as $data)
                     <tr>
-                        <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
                         <td>{!!$data->name!!}</td>
                         <td>{!!$data->office_address!!}</td>
                         <td>{!!$data->chairman_name!!}</td>

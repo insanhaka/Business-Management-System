@@ -12,7 +12,7 @@
         <div class="card-header">
             <div class="row">
                 <div class="col-md-6">
-                    <h2 class="text-primary">Data Business Category</h2>
+                    <h2 class="text-primary">Data Kategori Usaha</h2>
                 </div>
                 <div class="col-md-6 text-right">
                     <a class="btn btn-primary" href="/dapur/business-category/add" role="button">Add Data</a>
@@ -20,10 +20,9 @@
             </div>
         </div>
         <div class="card-body">
-            <table id="datatable" class="table table-striped table-bordered display responsive nowrap" style="width:100%">
+            <table id="datatable" class="table table-striped table-sm table-bordered display responsive nowrap" style="width:100%">
                 <thead class="bg-primary" style="color: #ffff;">
                     <tr>
-                        <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
                         <th>Name</th>
                         <th>Action</th>
                     </tr>
@@ -31,7 +30,6 @@
                 <tbody>
                     @foreach ($category as $data)
                     <tr>
-                        <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></td>
                         <td>{!!$data->name!!}</td>
                         <td>
                             <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>

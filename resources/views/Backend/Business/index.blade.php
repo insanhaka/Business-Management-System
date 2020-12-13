@@ -1,7 +1,22 @@
 @extends('Backend.Layout.app')
 
 @section('css')
-
+<style>
+    .opsButtonBusiness-hide {
+        display: none;
+    }
+    .opsButtonBusiness-show {
+        display: flex;
+    }
+</style>
+<style>
+    .opsButtonOwner-hide {
+        display: none;
+    }
+    .opsButtonOwner-show {
+        display: flex;
+    }
+</style>
 @endsection
 
 @section('content')
@@ -31,12 +46,10 @@
             </ul>
             <div class="tab-content" id="myTabContent" style="padding-top: 3%">
                 <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
-                    <form action="/dapur/business/owner/delete-all" method="POST">
-                    @csrf
-                    <table id="datatable-owner" class="table table-striped table-bordered display responsive nowrap" style="width:100%" id="owner-tableserverside">
+                    <table class="table table-striped table-sm table-bordered display responsive nowrap" style="width:100%" id="owner-tableserverside">
                         <thead class="bg-primary" style="color: #ffff;">
                             <tr>
-                                <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+                                {{-- <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th> --}}
                                 <th>Nama</th>
                                 <th>NIK</th>
                                 <th>Alamat KTP</th>
@@ -47,43 +60,20 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {{-- @foreach ($owner as $data)
-                            <tr>
-                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox{!!$data->id!!}" name="cek[]" value="{!! $data->id !!}"></td>
-                                <td>{!!$data->name!!}</td>
-                                <td>{!!$data->nik!!}</td>
-                                <td>{!!Str::limit($data->ktp_address, 35)!!}</td>
-                                <td>{!!Str::limit($data->domisili_address, 35)!!}</td>
-                                @if ($data->attachment == null)
-                                <td><i class="fa fa-times-circle text-danger" style="font-size: 21px;"></i></td>
-                                @else
-                                <td>
-                                    <a href="{{url('/agreement_file').'/'.$data->attachment}}" target="_blank"><i class="fa fa-check-circle text-success" style="font-size: 21px;"></i></a>
-                                </td>
-                                @endif
-                                <td><a class="btn btn-success btn-sm" href="{{url()->current().'/owner/show/'.$data->id}}" role="button">View</a></td>
-                                <td>
-                                    <a style="margin-right: 20px;" href="{{url()->current().'/owner/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
-                                    <a style="margin-right: 10px;" href="{{url()->current().'/owner/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach --}}
+                            {{-- DATA TABLES SERVERSIDE --}}
                         </tbody>
                     </table>
-                    <div class="row" style="margin-top: 3%;">
+                    <div class="row opsButtonOwner-hide" style="margin-top: 3%;" id="opsButtonOwner">
                         <div class="col-md-12" style="padding-bottom: 1%;">
-                            <input class="btn btn-danger" type="submit" value="Hapus Yang Terpilih">
+                            <input class="btn btn-danger" type="button" value="Hapus Yang Terpilih" id="delete-all">
                         </div>
                     </div>
-                    </form>
                 </div>
                 <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
-                    <form action="/dapur/business/generate-qrcode" method="POST">
-                        @csrf
-                    <table id="datatable-business" class="table table-striped table-bordered display responsive nowrap" style="width:100%">
+                    <table id="business-tableserverside" class="table table-striped table-sm table-bordered display responsive nowrap" style="width:100%">
                         <thead class="bg-primary" style="color: #ffff;">
                             <tr>
-                                <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th>
+                                {{-- <th style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input"></th> --}}
                                 <th>Nama</th>
                                 <th>Pemilik</th>
                                 <th>Alamat</th>
@@ -94,37 +84,14 @@
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($business as $data)
-                            <tr>
-                                <td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox{!!$data->id!!}" name="cek[]" value="{!! $data->id !!}"></td>
-                                <td>{!!$data->name!!}</td>
-                                <td>{!!$data->owner!!}</td>
-                                <td>{!!Str::limit($data->loc_address, 40)!!}</td>
-                                @if ($data->community_id == null)
-                                <td>-----</td>
-                                @else
-                                <td>{!!$data->community->name!!}</td>
-                                @endif
-                                @if ($data->status === 'Verify')
-                                <td>{!!$data->status!!} &nbsp; <img src="{{asset('assets/img/icons/checked.png')}}" class="img-fluid" alt="Responsive image" width="20"></td>
-                                @else
-                                <td>{!!$data->status!!} &nbsp; <img src="{{asset('assets/img/icons/minus.png')}}" class="img-fluid" alt="Responsive image" width="20"></td>
-                                @endif
-                                <td><a class="btn btn-success btn-sm" href="{{url()->current().'/show/'.$data->id}}" role="button">View</a></td>
-                                <td>
-                                    <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
-                                    <a style="margin-right: 10px;" href="{{url()->current().'/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
-                                </td>
-                            </tr>
-                            @endforeach
+                            {{-- DATA TABLES SERVERSIDE --}}
                         </tbody>
                     </table>
-                    <div class="row" style="margin-top: 3%;">
+                    <div class="row opsButtonBusiness-hide" style="margin-top: 3%;" id="opsButtonBusiness">
                         <div class="col-md-12" style="padding-bottom: 1%;">
-                            <input class="btn btn-success" type="submit" value="Generate QRcode">
+                            <input class="btn btn-success" type="button" value="Generate QRcode" id="generate">
                         </div>
                     </div>
-                    </form>
                 </div>
             </div>
         </div>
@@ -214,67 +181,136 @@
     @endif
 </script>
 
-@foreach ($owner as $data)
-    <script>
-        $('#cekbox{!!$data->id!!}').click(function(event) {
-            var favorite = [];
-            $.each($("input[name='cek[]']:checked"), function(){
-                favorite.push($(this).val());
-            });
-            // alert("My favourite sports are: " + favorite.join(", "));
-            var terpilih = favorite.length;
-            console.log(terpilih);
+<script type="text/javascript">
+    $(document).ready(function() {
+        var events = $('#events');
+        var tableowner = $('#owner-tableserverside').DataTable({
+            processing: true,
+            serverSide: true,
+            "language": {
+                "paginate": {
+                "previous": "&lt",
+                "next": "&gt"
+                }
+            },
+            ajax: "{!!url('/dapur')!!}" + "/business/owner/getdataowner-serverside",
+            select: {
+                style: 'multi'
+            },
+            order: [
+                [0, 'asc']
+            ],
+            columns: [
+                // {data: 'checkbox',name: 'checkbox', searchable: false, orderable: false},
+                {data: 'name',name: 'name'},
+                {data: 'nik',name: 'nik'},
+                {data: 'ktp_addr',name: 'ktp_addr'},
+                {data: 'dom_addr',name: 'dom_addr'},
+                {data: 'prokes', name: 'prokes'},
+                {data: 'details', name: 'details'},
+                {data: 'action',name: 'action'},
+            ]
         });
-    </script>
-@endforeach
+
+        var idSelected = [];
+        var idDeselected = [];
+
+        tableowner
+        .on( 'select', function ( e, dt, type, indexes ) {
+            var rowData = tableowner.rows( indexes ).data();
+            idSelected.push(rowData[0].id);
+            if (idSelected.length > 0) {
+                $('#opsButtonOwner').removeClass("opsButtonOwner-hide");
+                $('#opsButtonOwner').addClass("opsButtonOwner-show");
+            }
+        })
+        .on( 'deselect', function ( e, dt, type, indexes ) {
+            var rowData = tableowner.rows( indexes ).data();
+            idDeselected.push(rowData[0].id);
+            if (idSelected.length - idDeselected.length == 0) {
+                $('#opsButtonOwner').removeClass("opsButtonOwner-show");
+                $('#opsButtonOwner').addClass("opsButtonOwner-hide");
+            }
+        } );
+
+        // Handle form submission event 
+        $('#delete-all').on('click', function(){
+            var getdata = tableowner.rows( { selected: true } ).data().toArray();
+            // var id = getdata[0].id;
+            var dataID = [];
+            for (let i = 0; i < getdata.length; i++) {
+                const id = getdata[i].id;
+                dataID.push(id);
+            }
+            window.location.href = '/dapur/business/owner/delete-all/'+dataID+'';
+        });   
+
+    });
+</script>
 
 <script type="text/javascript">
     $(document).ready(function() {
+        var events = $('#events');
+        var tablebusiness = $('#business-tableserverside').DataTable({
+            processing: true,
+            serverSide: true,
+            "language": {
+                "paginate": {
+                "previous": "&lt",
+                "next": "&gt"
+                }
+            },
+            ajax: "{!!url('/dapur')!!}" + "/business/getdatabusiness-serverside",
+            select: {
+                style: 'multi'
+            },
+            order: [
+                [1, 'asc']
+            ],
+            columns: [
+                // {data: 'checkbox',name: 'checkbox', searchable: false, orderable: false},
+                {data: 'name',name: 'name'},
+                {data: 'owner',name: 'owner'},
+                {data: 'loc_addr',name: 'loc_addr'},
+                {data: 'community',name: 'community'},
+                {data: 'status', name: 'status'},
+                {data: 'details', name: 'details'},
+                {data: 'action',name: 'action'},
+            ]
+        });
 
-        console.log("{!!url('/dapur')!!}" + "/business/owner/getdataowner-serverside");
+        var idSelected = [];
+        var idDeselected = [];
 
-            var table = $('#owner-tableserverside').DataTable({
-                processing: true,
-                serverSide: true,
-                ajax: "{!!url('/dapur')!!}" + "/business/owner/getdataowner-serverside",
-                columnDefs: [{
-                    searchable: false,
-                    orderable: false,
-                    targets: 0,
-                    checkboxes: {
-                                    'selectRow': true,
-                                }
-                }],
-                select: {
-                    style: 'multi',
-                },
-                order: [
-                    [1, 'asc']
-                ],
-                columns: [
-                    {data: 'checkbox',name: 'checkbox', searchable: false, orderable: false},
-                    {data: 'name',name: 'name'},
-                    {data: 'nik',name: 'nik'},
-                    {data: 'ktp_addr',name: 'ktp_addr'},
-                    {data: 'dom_addr',name: 'dom_addr'},
-                    {data: 'prokes', name: 'prokes'},
-                    {data: 'details', name: 'details'},
-                    {data: 'action',name: 'action'},
-                ]
-            });
+        tablebusiness
+        .on( 'select', function ( e, dt, type, indexes ) {
+            var rowData = tablebusiness.rows( indexes ).data();
+            idSelected.push(rowData[0].id);
+            if (idSelected.length > 0) {
+                $('#opsButtonBusiness').removeClass("opsButtonBusiness-hide");
+                $('#opsButtonBusiness').addClass("opsButtonBusiness-show");
+            }
+        })
+        .on( 'deselect', function ( e, dt, type, indexes ) {
+            var rowData = tablebusiness.rows( indexes ).data();
+            idDeselected.push(rowData[0].id);
+            if (idSelected.length - idDeselected.length == 0) {
+                $('#opsButtonBusiness').removeClass("opsButtonBusiness-show");
+                $('#opsButtonBusiness').addClass("opsButtonBusiness-hide");
+            }
+        } );
 
-            // Handle form submission event 
-            $('#generate').on('click', function(e){
-                
-                var favorite = [];
-                $.each($("input[name='cek[]']:checked"), function(){
-                    favorite.push($(this).val());
-                });
-
-                window.location.href = '/admin/business/'+favorite+'/generate';
-
-
-            });   
+        // Handle form submission event 
+        $('#generate').on('click', function(){
+            var getdata = tablebusiness.rows( { selected: true } ).data().toArray();
+            // var id = getdata[0].id;
+            var dataID = [];
+            for (let i = 0; i < getdata.length; i++) {
+                const id = getdata[i].id;
+                dataID.push(id);
+            }
+            window.location.href = '/dapur/business/generate-qrcode/'+dataID+'';
+        });   
 
     });
 </script>

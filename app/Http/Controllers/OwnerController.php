@@ -8,7 +8,7 @@ use Illuminate\Support\Str;
 use App\Models\Community;
 use App\Models\Business;
 use App\Models\Operation_days;
-use DataTables;
+use Datatables;
 
 class OwnerController extends Controller
 {
@@ -18,11 +18,7 @@ class OwnerController extends Controller
         $data = Business_owner::query();
         return Datatables::eloquent($data)
             ->orderColumn('name', function ($query, $order) {
-                $query->orderBy('created_at', 'desc');
-            })
-            ->addColumn('checkbox', function ($data) {
-                $checkbox = '<td style="text-align: center;"><input type="checkbox" aria-label="Checkbox for following text input" id="cekbox'.$data->id.'" name="cek[]" value="'.$data->id.'"></td>' ;
-                return $checkbox;
+                $query->orderBy('name', 'asc');
             })
             ->addColumn('nik', function ($data) {
                 $nik = '<td>'.$data->nik.'</td>';
@@ -45,16 +41,16 @@ class OwnerController extends Controller
                 return $prokes;
             })
             ->addColumn('details', function ($data) {
-                $details = '<td><a class="btn btn-success btn-sm" href="'.url()->current().'/owner/show/'.$data->id.'" role="button">View</a></td>';
+                $details = '<td><a class="btn btn-success btn-sm" href="'.url('/dapur').'/business/owner/show/'.$data->id.'" role="button">View</a></td>';
                 return $details;
             })
             ->addColumn('action', function ($data) {
                 $action = '<td>
-                                <a style="margin-right: 20px;" href="'.url()->current().'/owner/edit/'.$data->id.'"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
-                                <a style="margin-right: 10px;" href="'.url()->current().'/owner/delete/'.$data->id.'"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
+                                <a style="margin-right: 20px;" href="'.url('/dapur').'/business/owner/edit/'.$data->id.'"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
+                                <a style="margin-right: 10px;" href="'.url('/dapur').'/business/owner/delete/'.$data->id.'"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
                             </td>';
                 return $action;
-            })->rawColumns(['checkbox','name','nik','ktp_addr', 'dom_addr', 'prokes', 'details', 'action'])
+            })->rawColumns(['name', 'nik','ktp_addr', 'dom_addr', 'prokes', 'details', 'action'])
             ->make(true);
     }
 
@@ -237,6 +233,17 @@ class OwnerController extends Controller
     {
         $owner = Business_owner::find($id);
         $process = $owner->delete();
+
+        if ($process) {
+            return redirect(url('/dapur/business'))->with('deleted','Data Berhasil Dihapus');
+        } else {
+            return back()->with('warning','Data Gagal Dihapus');
+        }
+    }
+
+    public function delall($id)
+    {
+        $process = Business_owner::destroy($id);
 
         if ($process) {
             return redirect(url('/dapur/business'))->with('deleted','Data Berhasil Dihapus');

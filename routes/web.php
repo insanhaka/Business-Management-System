@@ -26,6 +26,7 @@ use App\Http\Controllers\ProductController;
 //=========================FRONTEND ROUTE=================================//
 
 Route::get('/', [FrontlandingController::class, 'index'])->name('landing');
+Route::get('/qrcode/{id}', [FrontQRCodeController::class, 'index']);
 
 //=========================BACKEND ROUTE=================================//
 
@@ -112,7 +113,8 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/business/delete/{id}', [BusinessController::class, 'delete']);
     Route::get('/business/show/{id}', [BusinessController::class, 'show']);
     Route::post('/business/activation', [BusinessController::class, 'activation']);
-    Route::post('/business/generate-qrcode', [OwnerController::class, 'qrcode']);
+    Route::get('/business/generate-qrcode/{id}', [BusinessController::class, 'qrcode']);
+    Route::get('/business/getdatabusiness-serverside', [BusinessController::class, 'getBusinessDataServerSide']);
 
     Route::get('/business/owner/add', [OwnerController::class, 'add']);
     Route::post('/business/owner/create', [OwnerController::class, 'create']);
@@ -120,7 +122,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::post('/business/owner/update/{id}', [OwnerController::class, 'update']);
     Route::get('/business/owner/delete/{id}', [OwnerController::class, 'delete']);
     Route::get('/business/owner/show/{id}', [OwnerController::class, 'show']);
-    Route::post('/business/owner/delete-all', [OwnerController::class, 'delall']);
+    Route::get('/business/owner/delete-all/{id}', [OwnerController::class, 'delall']);
     Route::get('/business/owner/getdataowner-serverside', [OwnerController::class, 'getOwnerDataServerSide']);
 
     Route::get('/product/from-business/{id}', [ProductController::class, 'addfrom']);

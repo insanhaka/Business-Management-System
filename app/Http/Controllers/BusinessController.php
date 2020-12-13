@@ -10,14 +10,61 @@ use App\Models\Business_category;
 use App\Models\Business_owner;
 use App\Models\Operation_days;
 use Illuminate\Support\Str;
+use Datatables;
 
 class BusinessController extends Controller
 {
     public function view()
     {
-        $owner = Business_owner::all();
-        $business = Business::all();
-        return view('Backend.Business.index', ['owner' => $owner, 'business' => $business]);
+        // $owner = Business_owner::all();
+        // $business = Business::orderBy('owner', 'asc')->get();
+        return view('Backend.Business.index');
+    }
+
+    public function getBusinessDataServerSide()
+    {
+       
+        $data = Business::query();
+        return Datatables::eloquent($data)
+            ->orderColumn('owner', function ($query, $order) {
+                $query->orderBy('owner', 'asc');
+            })
+            ->addColumn('name', function ($data) {
+                $name = '<td>'.$data->name.'</td>';
+                return $name;
+            })
+            ->addColumn('loc_addr', function ($data) {
+                $loc_addr = '<td>'.Str::limit($data->loc_address, 20).'</td>';
+                return $loc_addr;
+            })
+            ->addColumn('community', function ($data) {
+                if($data->community_id == null){
+                    $community = '<td> - </td>';
+                }else{
+                    $community = '<td>'.$data->community->name.'</td>';
+                }
+                return $community;
+            })
+            ->addColumn('status', function ($data) {
+                if($data->status === 'Verify'){
+                    $status = '<td>'.$data->status.' &nbsp; <img src="'.asset('assets/img/icons/checked.png').'" class="img-fluid" alt="Responsive image" width="20"></td>';
+                }else{
+                    $status = '<td>'.$data->status.' &nbsp; <img src="'.asset('assets/img/icons/minus.png').'" class="img-fluid" alt="Responsive image" width="20"></td>';
+                }
+                return $status;
+            })
+            ->addColumn('details', function ($data) {
+                $details = '<td><a class="btn btn-success btn-sm" href="'.url('/dapur').'/business/show/'.$data->id.'" role="button">View</a></td>';
+                return $details;
+            })
+            ->addColumn('action', function ($data) {
+                $action = '<td>
+                                <a style="margin-right: 20px;" href="'.url('/dapur').'/business/edit/'.$data->id.'"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
+                                <a style="margin-right: 10px;" href="'.url('/dapur').'/business/delete/'.$data->id.'"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
+                            </td>';
+                return $action;
+            })->rawColumns(['name', 'owner','loc_addr', 'community', 'status', 'details', 'action'])
+            ->make(true);
     }
 
     public function add()
@@ -369,5 +416,13 @@ class BusinessController extends Controller
         $business->is_active = $request->is_active;
 
         $process = $business->save();
+    }
+
+    public function qrcode($id)
+    {
+        $collection = Str::of($id)->explode(',');
+        $business = Business::find($collection);
+
+        return view('Backend.Business.qrcode', ['business' => $business]);
     }
 }

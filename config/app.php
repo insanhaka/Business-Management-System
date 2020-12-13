@@ -234,6 +234,7 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'MenuLib' => App\Helpers\MenuLib::class,
+        'Datatables' => Yajra\DataTables\Facades\DataTables::class,
 
     ],
 
