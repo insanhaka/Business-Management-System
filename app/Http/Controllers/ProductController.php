@@ -78,12 +78,11 @@ class ProductController extends Controller
                 // isi dengan nama folder tempat kemana file diupload
                 $tujuan_upload = 'product_photo';
                 $img->move($tujuan_upload, $nama_file);
-                $data[] = [
-                         'title' => $nama_file,
-                         'product_id' => $fix_id
-                     ];
+                $savephoto = Product_photo::create([
+                    'title' => $nama_file,
+                    'product_id' => $fix_id
+                ]);
             }
-            $savephoto = DB::table('product_photos')->insert($data);
 
             $data = new Product;
             $data->id = $fix_id;
@@ -97,7 +96,7 @@ class ProductController extends Controller
 
             $process = $data->save();
 
-            if ($process && $savephoto) {
+            if ($process) {
                 return redirect(url('/dapur/product'))->with('created', 'Success');
             }else {
                 return back()->with('warning','Data Gagal Disimpan');
@@ -136,6 +135,12 @@ class ProductController extends Controller
                 return back()->with('warning','Data Gagal Disimpan');
             }
         }else{
+
+            $check_photo = Product_photo::where('product_id', $id)->get();
+            foreach ($check_photo as $item) {
+                $data[] = $item->id;
+            }
+            $photo_dell = Product_photo::destroy($data);
             
             foreach( $photo as $img )
             {
@@ -143,12 +148,11 @@ class ProductController extends Controller
                 // isi dengan nama folder tempat kemana file diupload
                 $tujuan_upload = 'product_photo';
                 $img->move($tujuan_upload, $nama_file);
-                $data[] = [
-                         'title' => $nama_file,
-                         'product_id' => $id
-                     ];
+                $savephoto = Product_photo::create([
+                    'title' => $nama_file,
+                    'product_id' => $id
+                ]);
             }
-            $savephoto = DB::table('product_photos')->insert($data);
 
             $data->name = $request->name;
             $data->description = $request->description;
@@ -158,7 +162,7 @@ class ProductController extends Controller
 
             $process = $data->save();
 
-            if ($process && $savephoto) {
+            if ($process) {
                 return redirect(url('/dapur/product'))->with('created', 'Success');
             }else {
                 return back()->with('warning','Data Gagal Disimpan');

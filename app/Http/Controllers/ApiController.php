@@ -8,6 +8,7 @@ use App\Models\Business_owner;
 use App\Models\Business;
 use App\Models\Product_category;
 use App\Models\Product;
+use App\Models\Product_photo;
 
 class ApiController extends Controller
 {
@@ -54,6 +55,15 @@ class ApiController extends Controller
         return response()->json([
             'message' => 'success',
             'data' => $product
+        ]);
+    }
+
+    public function dataphotoproduct()
+    {
+        $photo_product = Product_photo::all();
+        return response()->json([
+            'message' => 'success',
+            'data' => $photo_product
         ]);
     }
 

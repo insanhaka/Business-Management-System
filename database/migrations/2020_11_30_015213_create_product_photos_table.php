@@ -17,6 +17,8 @@ class CreateProductPhotosTable extends Migration
             $table->id();
             $table->string('title')->nullable();
             $table->char('product_id',15)->nullable();
+            $table->string('created_by', 50);
+            $table->string('updated_by', 50)->nullable();
             $table->timestamps();
         });
     }
