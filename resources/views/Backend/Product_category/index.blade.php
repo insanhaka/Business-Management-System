@@ -24,7 +24,7 @@
                 <thead class="bg-primary" style="color: #ffff;">
                     <tr>
                         <th>Name</th>
-                        <th>Icon</th>
+                        {{-- <th>Icon</th> --}}
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -32,7 +32,7 @@
                     @foreach ($category as $data)
                     <tr>
                         <td>{!!$data->name!!}</td>
-                        <td><img src="{{asset('menus_icon/'.$data->icon)}}" class="img-fluid" alt="Responsive image" width="50"></td>
+                        {{-- <td><img src="{{asset('menus_icon/'.$data->icon)}}" class="img-fluid" alt="Responsive image" width="50"></td> --}}
                         <td>
                             <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
                             <a style="margin-right: 10px;" href="{{url()->current().'/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>

@@ -31,6 +31,7 @@
                                     <option value="">-- Select --</option>
                                     <option value="parent">Parent</option>
                                     <option value="child">Child</option>
+                                    <option value="primary">Primary</option>
                                 </select>
                             </div>
                         </div>

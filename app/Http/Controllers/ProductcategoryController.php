@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product_category;
+use Illuminate\Support\Str;
 
 class ProductcategoryController extends Controller
 {
@@ -20,21 +21,12 @@ class ProductcategoryController extends Controller
 
     public function create(Request $request)
     {
+        $name_to_uri = Str::slug($request->name, '-');
+        $uri = "/".$name_to_uri;
+
         $create = new Product_category;
         $create->name = $request->name;
-
-        // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('icon');
-        if($file == null){
-            $nama_file = "";
-            $create->icon = $nama_file;
-        }else{
-            $nama_file = time()."_".$file->getClientOriginalName();
-            // isi dengan nama folder tempat kemana file diupload
-            $tujuan_upload = 'menus_icon';
-            $file->move($tujuan_upload, $nama_file);
-            $create->icon = $nama_file;
-        }
+        $create->uri = $uri;
 
         $process= $create->save();
         if ($process) {
@@ -53,21 +45,12 @@ class ProductcategoryController extends Controller
 
     public function update(Request $request, $id)
     {
+        $name_to_uri = Str::slug($request->name, '-');
+        $uri = "/".$name_to_uri;
+
         $product_category = Product_category::findOrFail($id);
         $product_category->name = $request->name;
-
-        // menyimpan data file yang diupload ke variabel $file
-        $file = $request->file('icon');
-        if($file == null){
-            $nama_file = "";
-            $product_category->icon = $nama_file;
-        }else{
-            $nama_file = time()."_".$file->getClientOriginalName();
-            // isi dengan nama folder tempat kemana file diupload
-            $tujuan_upload = 'menus_icon';
-            $file->move($tujuan_upload, $nama_file);
-            $product_category->icon = $nama_file;
-        }
+        $product_category->uri = $uri;
 
         $process= $product_category->save();
         if ($process) {

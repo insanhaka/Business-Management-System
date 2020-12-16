@@ -43,20 +43,33 @@ class MenuLib
             $menu_icon = $data_menu->icon;
             $menuID = Str::after($data_menu->uri, '/');
 
-            if ($data_menu->type === 'parent') {
-                $id_parent = $data_menu->id;
-                $html_out = '<p style="font-size: 12px; color: #a4b0be; margin-top: 15px; margin-left: 25px;">-----------'.$menu_name.'-----------</p>';
-                echo $html_out;
-            }else {
-                if ($data_menu->parent_id == $id_parent) {
-                    $html_out = '<li class="nav-item">
+            if (($data_menu->type === 'parent') == null) {
+                $html_out = '<li class="nav-item">
                             <a class="nav-link" href="'.$menu_uri.'" id="'.$menuID.'">
                                 <img src="/menus_icon/'.$menu_icon.'" width="15" style="margin-right: 20px;">
                                 <span class="nav-link-text">'.$menu_name.'</span>
                             </a>
                         </li> ' ;
 
+                echo $html_out;
+
+            }else {
+                
+                if ($data_menu->type === 'parent') {
+                    $id_parent = $data_menu->id;
+                    $html_out = '<p style="font-size: 12px; color: #a4b0be; margin-top: 15px; margin-left: 25px;">------'.$menu_name.'------</p>';
                     echo $html_out;
+                }else {
+                    if ($data_menu->parent_id == $id_parent) {
+                        $html_out = '<li class="nav-item">
+                                <a class="nav-link" href="'.$menu_uri.'" id="'.$menuID.'">
+                                    <img src="/menus_icon/'.$menu_icon.'" width="15" style="margin-right: 20px;">
+                                    <span class="nav-link-text">'.$menu_name.'</span>
+                                </a>
+                            </li> ' ;
+    
+                        echo $html_out;
+                    }
                 }
             }
         }
