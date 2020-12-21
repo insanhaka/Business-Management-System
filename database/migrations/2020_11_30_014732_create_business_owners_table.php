@@ -19,6 +19,7 @@ class CreateBusinessOwnersTable extends Migration
             $table->unsignedBigInteger('user_id')->nullable();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->bigInteger('nik');
+            $table->string('gender');
 
             $table->string('domisili_loc_province');
             $table->string('domisili_loc_regency');

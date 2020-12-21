@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 //===============FRONTEND ROUTE===============//
 use App\Http\Controllers\FrontlandingController;
+use App\Http\Controllers\FrontQRCodeController;
 
 //===============BACKEND ROUTE================//
 use App\Http\Controllers\AuthorizeController;
@@ -27,6 +28,8 @@ use App\Http\Controllers\ProductController;
 
 Route::get('/', [FrontlandingController::class, 'index'])->name('landing');
 Route::get('/qrcode/{id}', [FrontQRCodeController::class, 'index']);
+Route::get('/laporan/{id}', [FrontQRCodeController::class, 'laporanform']);
+Route::post('/sent-report', [FrontQRCodeController::class, 'sending']);
 
 //=========================BACKEND ROUTE=================================//
 

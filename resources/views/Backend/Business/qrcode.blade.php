@@ -10,34 +10,36 @@
 	<style>
 		#frame {
 			position: relative;
-			margin-top: -75%;
-			margin-left: -50%;
+			margin-top: -278px;
+			margin-left: -20px;
 		}
-
-        #button-save {
-            position: absolute;
-            top: 0;
-        }
+		.codeqr {
+			margin-left: 6%;
+			margin-bottom: 6%;
+		}
 	</style>
 
     <title>Generate QR Code</title>
   </head>
   <body>
-    <div class="section" id="section" style="width: 100%; height: 100vh;">
-    	<div class="container qrcode text-center">
+	<div class="section">
+		<div class="container text-center" style="margin-top: 2%">
+			<button type="button" class="btn btn-primary" id="tosave">Download</button>
+			<a class="btn btn-secondary" href="/dapur/business" role="button">Back</a>
+		</div>
+	</div>
+	<hr>
+    <div class="section" id="section" style="width: 100%; height: 100vh; padding: 2%;">
+    	<div class="container qrcode text-center" id="qrcodepaper" style="height: 100%">
 				<div class="row justify-content-around">
 					@foreach ($business as $d)
-					<div class="col-md-3">
-						<div id="qrcode{!!$d->id!!}"></div>
-						<img src="{{asset('assets/img/QRframe-01.png')}}" height="300" width="220" alt="" id="frame">
+					<div class="col-md-3" style="margin-bottom: 1%;">
+						<div id="qrcode{!!$d->id!!}" class="codeqr"></div>
+						<img src="{{asset('assets/img/QRframe-01.png')}}" style="height: 100%; width: 100%;" alt="" id="frame">
 					</div>
 					@endforeach
 				</div>
     	</div>
-	</div>
-	<div class="save" id="button-save">
-		<button type="button" class="btn btn-primary" id="tosave">Download</button>
-		<a class="btn btn-secondary" href="/dapur/business" role="button">Back</a>
 	</div>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
@@ -52,8 +54,8 @@
 	function showQr() {
 	    new QRCode(document.getElementById("qrcode{!! $i->id !!}"), {
 	        text : window.location.origin + "/qrcode/"+ {!! $i->id !!},
-	        width: 130,
-	        height: 130,
+	        width: 200,
+	        height: 200,
 	        colorDark: "#000000",
 	        colorLight: "#ffffff",
 
@@ -85,31 +87,28 @@
 		$('#tosave').click(function() {
 
 			// var element = document.getElementById("qrcode{!!$i->id!!}");
-			var element = document.getElementById("section");
+			var element = document.getElementById("qrcodepaper");
 
 			html2canvas(element).then(function(canvas) {
 
 				var base64image = canvas.toDataURL("image/jpg");
 
-				// var downloadLink = document.createElement("a");
-				// downloadLink.href = base64image;
-				// downloadLink.download = "{!!$i->name!!}.jpeg";
-				// document.body.appendChild(downloadLink);
-				// downloadLink.click();
-				// document.body.removeChild(downloadLink);
+                console.log(base64image);
 
 				const doc = new jsPDF({
 				orientation: "landscape"
 				});
+				var width = doc.internal.pageSize.getWidth();
+				var height = doc.internal.pageSize.getHeight();
 
-				doc.addImage(base64image, "JPEG", -22, -10, 370, 210);
-				doc.save("cek.pdf");
+				doc.addImage(base64image, "JPEG", 0, 0, width, height);
+				doc.save("QRCODE.pdf");
 			});
 
 
 		});
 	</script>
-	
+
 
   </body>
 </html>

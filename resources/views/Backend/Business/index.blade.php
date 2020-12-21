@@ -233,7 +233,7 @@
             }
         } );
 
-        // Handle form submission event 
+        // Handle form submission event
         $('#delete-all').on('click', function(){
             var getdata = tableowner.rows( { selected: true } ).data().toArray();
             // var id = getdata[0].id;
@@ -243,7 +243,7 @@
                 dataID.push(id);
             }
             window.location.href = '/dapur/business/owner/delete-all/'+dataID+'';
-        });   
+        });
 
     });
 </script>
@@ -300,7 +300,7 @@
             }
         } );
 
-        // Handle form submission event 
+        // Handle form submission event
         $('#generate').on('click', function(){
             var getdata = tablebusiness.rows( { selected: true } ).data().toArray();
             // var id = getdata[0].id;
@@ -309,8 +309,14 @@
                 const id = getdata[i].id;
                 dataID.push(id);
             }
-            window.location.href = '/dapur/business/generate-qrcode/'+dataID+'';
-        });   
+
+            if (dataID.length > 8) {
+                bootbox.alert("Maaf Saat Ini Generate QRCode Hanya Bisa Memilih Maksimal 8 saja");
+            }else {
+                window.location.href = '/dapur/business/generate-qrcode/'+dataID+'';
+            }
+
+        });
 
     });
 </script>

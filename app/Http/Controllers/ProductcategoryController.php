@@ -22,7 +22,7 @@ class ProductcategoryController extends Controller
     public function create(Request $request)
     {
         $name_to_uri = Str::slug($request->name, '-');
-        $uri = "/".$name_to_uri;
+        $uri = $name_to_uri;
 
         $create = new Product_category;
         $create->name = $request->name;
