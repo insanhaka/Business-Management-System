@@ -11,4 +11,9 @@ class Report extends Model
 
     protected $table = 'reports';
     protected $guarded = [];
+
+    public function business()
+    {
+        return $this->belongsTo('App\Models\Business', 'business_id', 'id');
+    }
 }

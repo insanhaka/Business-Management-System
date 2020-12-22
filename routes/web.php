@@ -20,6 +20,8 @@ use App\Http\Controllers\BusinesscategoryController;
 use App\Http\Controllers\CommunityController;
 use App\Http\Controllers\ProductcategoryController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\StatisticController;
+use App\Http\Controllers\ReportController;
 
 
 
@@ -137,6 +139,11 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/product/delete/{id}', [ProductController::class, 'delete']);
     Route::get('/product/show/{id}', [ProductController::class, 'show']);
     Route::post('/product/activation', [ProductController::class, 'activation']);
+
+    Route::get('/statistic', [StatisticController::class, 'view'])->name('statistic');
+
+    Route::get('/report', [ReportController::class, 'view'])->name('report');
+    Route::get('/report/delete/{id}', [ReportController::class, 'delete']);
 
 
     Route::post('/getRegenciesFromProvince', function (Request $request) {

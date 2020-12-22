@@ -42,4 +42,9 @@ class Business extends Model
     {
         return $this->hasMany('App\Models\Product', 'business_id', 'id');
     }
+
+    public function report()
+    {
+        return $this->hasMany('App\Models\Report', 'business_id', 'id');
+    }
 }

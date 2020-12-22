@@ -1,7 +1,7 @@
 @extends('Backend.Layout.app')
 
 @section('css')
-<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/css/select2.min.css" rel="stylesheet" />
+<link href="{{asset('assets/css/slimselect.min.css')}}" rel="stylesheet">
 <style>
     /*the container must be positioned relative:*/
 .autocomplete {
@@ -91,8 +91,14 @@
                     <div class="row">
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="exampleFormControlInput1">Produk Milik Usaha</label>
-                                <input type="text" class="form-control" id="business-id" name="business_id" placeholder="Business name">
+                                <label for="exampleFormControlInput1">Nama Usaha</label>
+                                {{-- <input type="text" class="form-control" id="business-id" name="business_id" placeholder="Business name"> --}}
+                                <select class="form-control" name="business_id" id="business-id">
+                                    <option value="">-- Select Business Name --</option>
+                                    @foreach ($business as $data)
+                                    <option value="{!!$data->id!!}">{!! $data->name !!} | {!! $data->owner !!}</option>
+                                    @endforeach
+                                </select>
                             </div>
                         </div>
                         <div class="col-md-6">
@@ -169,6 +175,17 @@
         // Format mata uang.
         $( '#price' ).mask('000.000.000', {reverse: true});
     })
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slim-select/1.26.0/slimselect.min.js"></script>
+
+<script>
+    $(document).ready(function() {
+        new SlimSelect({
+            select: '#business-id',
+            height: 100
+        })
+    });
 </script>
 
 <script>

@@ -46,7 +46,7 @@ class ProductcategoryController extends Controller
     public function update(Request $request, $id)
     {
         $name_to_uri = Str::slug($request->name, '-');
-        $uri = "/".$name_to_uri;
+        $uri = $name_to_uri;
 
         $product_category = Product_category::findOrFail($id);
         $product_category->name = $request->name;

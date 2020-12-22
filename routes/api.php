@@ -26,3 +26,6 @@ Route::get('data-owner', [ApiController::class, 'dataowner']);
 Route::get('data-product-category', [ApiController::class, 'dataproductcategory']);
 Route::get('data-product', [ApiController::class, 'dataproduct']);
 Route::get('data-photo-product', [ApiController::class, 'dataphotoproduct']);
+Route::get('data-report', [ApiController::class, 'datareport']);
+
+Route::get('data-report-custome', [ApiController::class, 'datareportcustome']);
