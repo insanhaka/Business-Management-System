@@ -30,6 +30,7 @@
                     <h2 class="text-primary">Data Usaha</h2>
                 </div>
                 <div class="col-md-6 text-right">
+                    <a class="btn btn-success" href="/dapur/business/import" role="button">Import Excel</a>
                     <a class="btn btn-primary" href="/dapur/business/owner/add" role="button">Tambah Data</a>
                 </div>
             </div>

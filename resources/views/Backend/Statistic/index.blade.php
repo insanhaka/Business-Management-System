@@ -3,34 +3,23 @@
 @section('css')
 
 <style>
-body {
-  --table-width: 100%; /* Or any value, this will change dinamically */
-}
-tbody {
+.list-group {
   display:block;
-  max-height:173px;
+  max-height:200px;
   overflow-y:auto;
 }
-tbody::-webkit-scrollbar {
+.list-group::-webkit-scrollbar {
     width: 5px;
 }
 
-tbody::-webkit-scrollbar-track {
+.list-group::-webkit-scrollbar-track {
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
     border-radius: 10px;
 }
 
-tbody::-webkit-scrollbar-thumb {
+.list-group::-webkit-scrollbar-thumb {
     border-radius: 10px;
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
-}
-thead, tbody tr {
-  display:table;
-  width: var(--table-width);
-  table-layout:fixed;
-}
-td {
-    font-size: 5px;
 }
 
 </style>
@@ -60,9 +49,23 @@ td {
                             <option value="good">Laporan Sangat Baik Terbanyak</option>
                         </select>
                     </div>
-                    <table class="table table-sm table-responsive">
+                    {{-- <table class="table table-sm table-responsive"> --}}
                         {{-- Handle with JS --}}
-                    </table>
+                    {{-- </table> --}}
+                    <div class="row text-center" style="font-size: 12px; margin-top: -3%; margin-bottom: 3%">
+                        <div class="col-md-4">
+                            Nama Usaha
+                        </div>
+                        <div class="col-md-4">
+                            
+                        </div>
+                        <div class="col-md-4">
+                            Detail
+                        </div>
+                    </div>
+                    <ul class="list-group" style="font-size: 13px;" id="mylist">
+                        {{-- JS Handle --}}
+                    </ul>
                     <a class="btn btn-primary btn-block btn-sm" href="/dapur/report" role="button" style="margin-top: 5%">Lihat Semua Data</a>
                 </div>
             </div>
@@ -71,24 +74,21 @@ td {
 </div>
 <div class="container-fluid" style="margin-bottom: 3%;">
     <div class="row justify-content-center">
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4>Pie Usaha Menyetujui Prokes</h4>
+                    <div id='myPieOne'>
+                        <!-- Plotly chart will be drawn inside this DIV -->
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-4">
+        <div class="col-md-6">
             <div class="card">
                 <div class="card-body">
-                    <h4>Pie Rekapitulasi Nilai Semua Laporan</h4>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="card">
-                <div class="card-body">
-                    <h4>Pie Usaha Menyetujui Prokes</h4>
+                    <div id='myPieTwo'>
+                        <!-- Plotly chart will be drawn inside this DIV -->
+                    </div>
                 </div>
             </div>
         </div>
@@ -102,6 +102,7 @@ td {
 <script src="https://code.highcharts.com/modules/exporting.js"></script>
 <script src="https://code.highcharts.com/modules/export-data.js"></script>
 <script src="https://code.highcharts.com/modules/accessibility.js"></script>
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
     $(document).ready(function() {   
@@ -146,102 +147,130 @@ td {
     @endif
 </script>
 
+{{-- SCRIPT GRAFIK --}}
 <script src="{{asset('assets/js/handmade/prokes-chart.js')}}"></script>
-
 <script>
     $(document).ready(function() {
-        
-        // Make a request
-        axios.get('/api/data-report-custome')
+
+        axios.get('/api/data-prokes-agree-count')
         .then(function (response) {
-            var datareport = response.data['datareport'];
+            var result = response.data['data'];
+            // console.log(result);
+            var Colors = ['#546de5', '#e66767',];
 
-            // console.log(datareport);
+            var data = [{
+                values: result,
+                labels: ['Sudah', 'Belum',],
+                type: 'pie',
+                marker: {
+                            colors: Colors
+                        },
+                hoverlabel: {
+                            font: {color: '#fff'}
+                        },
+                insidetextfont: {
+                            color: '#fff'
+                } 
+            }];
 
-            // var tbodyreport = document.querySelector("table");
-            // tbodyreport.innerHTML = '';
-            let table = document.querySelector("table");
-            let data = Object.keys(datareport[0]);
+            var layout = { 
+                title: 'Data Pelaku Usaha Yang Menyetujui <br>Protokol Kesehatan',
+                font: {size: 12}
+            };
 
-            function generateTableHead(table, data) {
-            let thead = table.createTHead();
-            let row = thead.insertRow();
-                for (let key of data) {
-                    let th = document.createElement("th");
-                    let text = document.createTextNode(key);
-                    th.appendChild(text);
-                    row.appendChild(th);
-                }
-            }
+            var config = {responsive: true}
 
-            function generateTable(table, data) {
-                for (let element of data) {
-                    let row = table.insertRow();
-                    for (key in element) {
-                    let cell = row.insertCell();
-                    let text = document.createTextNode(element[key]);
-                    cell.appendChild(text);
-                    }
-                }
-            }
-
-            generateTableHead(table, data);
-            generateTable(table, datareport);
+            Plotly.newPlot('myPieOne', data, layout, config);
 
         })
         .catch(function (error) {
             // handle error
             console.log(error);
         });
+
     });
+
+</script>
+<script>
+    $(document).ready(function() {
+
+        axios.get('/api/data-grade-report')
+        .then(function (response) {
+            var result = response.data['data'];
+            // console.log(result);
+            var Colors = ['#e66767', '#ffb142', '#27ae60', '#3498db', '#546de5'];
+
+            var data = [{
+                values: result,
+                labels: ['Sangat Buruk', 'Buruk', 'Cukup Baik', 'Baik', 'Sangat Baik'],
+                type: 'pie',
+                marker: {
+                            colors: Colors
+                        },
+                hoverlabel: {
+                            font: {color: '#fff'}
+                        },
+                insidetextfont: {
+                            color: '#fff'
+                } 
+            }];
+
+            var layout = { 
+                title: 'Total Jumlah Laporan Masuk <br>Berdasarkan Tingkat Penilaian',
+                font: {size: 12}
+            };
+
+            var config = {responsive: true}
+
+            Plotly.newPlot('myPieTwo', data, layout, config);
+
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        });
+
+    });
+
 </script>
 
 <script>
+    //Mengambil data JSON Alamat untuk KTP
     $(document).ready(function() {
+
+        let newlist = $('#mylist');
+        // Make a request
+        axios.get('/api/data-report-custome')
+        .then(function (response) {
+            var datareport = response.data['datareport'];
+            // console.log(datareport);
+
+            $.each(datareport, function (index, entry) {
+                newlist.append($('<li class="list-group-item d-flex justify-content-between align-items-center">'+entry['Nama Usaha']+'<span class="badge badge-primary badge-pill" style="font-size: 13px">1</span><a class="btn btn-primary btn-sm" href="{!!url('/dapur')!!}/business/show/'+entry['id']+'" role="button">View</a></li>'));
+            });
+
+        })
+        .catch(function (error) {
+            // handle error
+            console.log(error);
+        });
 
         $('#sort').on('change', function () {
             var selected = this.value;
             
             if (selected === 'good') {
                 // console.log("bisa");
-
+                newlist.empty();
                 // Make a request
                 axios.get('/api/data-report-custome')
                 .then(function (response) {
                     var dataterbaik = response.data['dataterbaik'];
 
-                    // console.log(dataterburuk);
+                    let newlist = $('#mylist');
 
-                    var tbodygood = document.querySelector("table");
-                    tbodygood.innerHTML = '';
-
-                    let table = document.querySelector("table");
-                    let data = Object.keys(dataterbaik[0]);
-
-                    function generateTableHead(table, data) {
-                    let thead = table.createTHead();
-                    let row = thead.insertRow();
-                        for (let key of data) {
-                            let th = document.createElement("th");
-                            let text = document.createTextNode(key);
-                            th.appendChild(text);
-                            row.appendChild(th);
-                        }
-                    }
-
-                    function generateTable(table, data) {
-                        for (let element of data) {
-                            let row = table.insertRow();
-                            for (key in element) {
-                            let cell = row.insertCell();
-                            let text = document.createTextNode(element[key]);
-                            cell.appendChild(text);
-                            }
-                        }
-                    }
-
-                    generateTableHead(table, data);
-                    generateTable(table, dataterbaik);
+                    $.each(dataterbaik, function (index, entry) {
+                        newlist.append($('<li class="list-group-item d-flex justify-content-between align-items-center">'+entry['Nama Usaha']+'<span class="badge badge-primary badge-pill" style="font-size: 13px">'+entry['Jumlah']+'</span><a class="btn btn-primary btn-sm" href="{!!url('/dapur')!!}/business/show/'+entry['id']+'" role="button">View</a></li>'));
+                    });
 
                 })
                 .catch(function (error) {
@@ -251,55 +280,24 @@ td {
 
             }else if(selected === 'bad'){
                 // console.log("bisa");
-
+                newlist.empty();
                 // Make a request
                 axios.get('/api/data-report-custome')
                 .then(function (response) {
                     var dataterburuk = response.data['dataterburuk'];
 
-                    // console.log(dataterburuk);
-
-                    var tbodybad = document.querySelector("table");
-                    tbodybad.innerHTML = '';
-
-                    let table = document.querySelector("table");
-                    let data = Object.keys(dataterburuk[0]);
-
-                    function generateTableHead(table, data) {
-                    let thead = table.createTHead();
-                    let row = thead.insertRow();
-                        for (let key of data) {
-                            let th = document.createElement("th");
-                            let text = document.createTextNode(key);
-                            th.appendChild(text);
-                            row.appendChild(th);
-                        }
-                    }
-
-                    function generateTable(table, data) {
-                        for (let element of data) {
-                            let row = table.insertRow();
-                            for (key in element) {
-                            let cell = row.insertCell();
-                            let text = document.createTextNode(element[key]);
-                            cell.appendChild(text);
-                            }
-                        }
-                    }
-
-                    generateTableHead(table, data);
-                    generateTable(table, dataterburuk);
-
-                })
-                .catch(function (error) {
-                    // handle error
-                    console.log(error);
+                    $.each(dataterburuk, function (index, entry) {
+                        newlist.append($('<li class="list-group-item d-flex justify-content-between align-items-center">'+entry['Nama Usaha']+'<span class="badge badge-primary badge-pill" style="font-size: 13px">'+entry['Jumlah']+'</span><a class="btn btn-primary btn-sm" href="{!!url('/dapur')!!}/business/show/'+entry['id']+'" role="button">View</a></li>'));
+                    });
+                
                 });
 
             }
 
         });
+
     });
+
 </script>
 
 @endsection

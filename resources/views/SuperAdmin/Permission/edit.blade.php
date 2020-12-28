@@ -43,33 +43,45 @@
                                 <tbody>
                                     @foreach ($data as $item)
                                     @if ($item->is_active == 1)
-                                    <tr>
-                                        <td>{!! $item->name !!}</td>
-                                        <td>
-                                            <label class="custom-toggle">
-                                            <input type="checkbox" name="permission[]" value="{!! "/".Str::lower($item->name)."/view" !!}">
-                                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="custom-toggle">
-                                            <input type="checkbox" name="permission[]" value="{!! "/".Str::lower($item->name) ."/create" !!}">
-                                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="custom-toggle">
-                                            <input type="checkbox" name="permission[]" value="{!! "/".Str::lower($item->name) ."/edit" !!}">
-                                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                            </label>
-                                        </td>
-                                        <td>
-                                            <label class="custom-toggle">
-                                            <input type="checkbox" name="permission[]" value="{!! "/".Str::lower($item->name) ."/delete" !!}">
-                                            <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
-                                            </label>
-                                        </td>
-                                    </tr>
+                                        @if ($item->type === 'parent')
+                                        <tr>
+                                            <td>{!! $item->name !!}</td>
+                                            <td>
+                                                <label class="custom-toggle">
+                                                <input type="checkbox" name="permission[]" value="{!! $item->uri."/active" !!}">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        @else
+                                        <tr>
+                                            <td>{!! $item->name !!}</td>
+                                            <td>
+                                                <label class="custom-toggle">
+                                                <input type="checkbox" name="permission[]" value="{!! $item->uri."/view" !!}">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="custom-toggle">
+                                                <input type="checkbox" name="permission[]" value="{!! $item->uri."/create" !!}">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="custom-toggle">
+                                                <input type="checkbox" name="permission[]" value="{!! $item->uri."/edit" !!}">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                                                </label>
+                                            </td>
+                                            <td>
+                                                <label class="custom-toggle">
+                                                <input type="checkbox" name="permission[]" value="{!! $item->uri."/delete" !!}">
+                                                <span class="custom-toggle-slider rounded-circle" data-label-off="No" data-label-on="Yes"></span>
+                                                </label>
+                                            </td>
+                                        </tr>
+                                        @endif
                                     @endif
                                     @endforeach
                                 </tbody>

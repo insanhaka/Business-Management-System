@@ -54,6 +54,7 @@
             <p class="text-center" style="font-size: 20px; font-weight: bold;">{!! $data->business_name !!}</p>
             <div class="row justify-content-center" style="margin-top: -3%;">
               <div class="form-group text-center">
+                <h3>{!! $data->name !!}</h3>
                 <input id="star" name="rating" class="rating rating-loading" data-min="0" data-max="5" data-step="0.1" data-size="sm" style="margin-top: 50px;">
                 <span class="badge badge-pill" id="nilai">3.5</span>
               </div>
@@ -62,7 +63,7 @@
             <p style="margin-bottom: 5%">Nama pemilik :</p>
             <div class="row" style="margin-top: -3%;">
                 <div class="col-1"><img src="{{asset('assets/img/user.png')}}" style="width: 20px;"></div>
-                <div class="col-10"><b>{!! $data->name !!}</b></div>
+                <div class="col-10"><b>{!! $data->owner !!}</b></div>
             </div>
             <hr>
             <p style="margin-bottom: 5%">Lokasi jualan :</p>

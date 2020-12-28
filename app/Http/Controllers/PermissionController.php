@@ -43,7 +43,7 @@ class PermissionController extends Controller
         foreach($request->permission as $data)
         {
             $get_menu = Str::between($data, '/', '/');
-            $menu_id = Menu::where('name', $get_menu)->first();
+            $menu_id = Menu::where('uri', '/'.$get_menu)->first();
             Permission::create([
                 'name' => $role->name.':'.$data,
                 'menu_id' => $menu_id->id
@@ -101,7 +101,7 @@ class PermissionController extends Controller
         foreach($request->permission as $data)
         {
             $get_menu = Str::between($data, '/', '/');
-            $menu_id = Menu::where('name', $get_menu)->first();
+            $menu_id = Menu::where('uri', '/'.$get_menu)->first();
             Permission::create([
                 'name' => $role->name.':'.$data,
                 'menu_id' => $menu_id->id

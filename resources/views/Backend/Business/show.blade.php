@@ -67,7 +67,7 @@
                                 @if ($business->community_id == null)
                                 <td>-----------</td>
                                 @else
-                                <td>{!!$business->community->name!!}</td>
+                                <td>{!!wordwrap($business->community->name,30,"<br>\n")!!}</td>
                                 @endif
                             </tr>
                             <tr>

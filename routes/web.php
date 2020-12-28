@@ -120,6 +120,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::post('/business/activation', [BusinessController::class, 'activation']);
     Route::get('/business/generate-qrcode/{id}', [BusinessController::class, 'qrcode']);
     Route::get('/business/getdatabusiness-serverside', [BusinessController::class, 'getBusinessDataServerSide']);
+    Route::get('/business/import', [BusinessController::class, 'import']);
 
     Route::get('/business/owner/add', [OwnerController::class, 'add']);
     Route::post('/business/owner/create', [OwnerController::class, 'create']);

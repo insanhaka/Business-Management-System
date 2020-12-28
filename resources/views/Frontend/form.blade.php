@@ -57,7 +57,7 @@
                 <label for="exampleFormControlTextarea1">Keterangan</label>
                 <textarea class="form-control" name="description" rows="3"></textarea>
               </div>
-			<button class="btn btn-block" type="submit" style="margin-top: 5%; margin-bottom: 10%; background-color: #5a61c1; color: #fff;">Kirim</button>
+			<button class="btn btn-block" type="submit" style="margin-top: 5%; margin-bottom: 10%; background-color: #5a61c1; color: #fff; height: 50px; font-size: 18px;">Kirim</button>
 		</form>
     </div>
 

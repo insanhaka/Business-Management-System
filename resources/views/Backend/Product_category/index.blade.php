@@ -15,7 +15,7 @@
                     <h2 class="text-primary">Data Kategori Produk</h2>
                 </div>
                 <div class="col-md-6 text-right">
-                    <a class="btn btn-primary" href="/dapur/product-category/add" role="button">Add Data</a>
+                    {!! ButtonLib::addButton(Auth::user()->getRoleNames()) !!}
                 </div>
             </div>
         </div>
@@ -34,8 +34,8 @@
                         <td>{!!$data->name!!}</td>
                         {{-- <td><img src="{{asset('menus_icon/'.$data->icon)}}" class="img-fluid" alt="Responsive image" width="50"></td> --}}
                         <td>
-                            <a style="margin-right: 20px;" href="{{url()->current().'/edit/'.$data->id}}"><i class="fa fa-edit text-primary" style="font-size: 21px;"></i></a>
-                            <a style="margin-right: 10px;" href="{{url()->current().'/delete/'.$data->id}}"><i class="fa fa-trash text-primary" style="font-size: 21px;"></i></a>
+                            {!! ButtonLib::editButton(Auth::user()->getRoleNames(), $data) !!}
+                            {!! ButtonLib::deleteButton(Auth::user()->getRoleNames(), $data)!!}  
                         </td>
                     </tr>
                     @endforeach

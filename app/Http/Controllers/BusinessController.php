@@ -425,4 +425,10 @@ class BusinessController extends Controller
 
         return view('Backend.Business.qrcode', ['business' => $business]);
     }
+
+    public function import()
+    {
+        return view('Backend.Business.import');
+    }
+
 }
