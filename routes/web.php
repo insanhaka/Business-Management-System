@@ -121,6 +121,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/business/generate-qrcode/{id}', [BusinessController::class, 'qrcode']);
     Route::get('/business/getdatabusiness-serverside', [BusinessController::class, 'getBusinessDataServerSide']);
     Route::get('/business/import', [BusinessController::class, 'import']);
+    Route::post('/business/file-import', [BusinessController::class, 'fileImport'])->name('business-file-import');
 
     Route::get('/business/owner/add', [OwnerController::class, 'add']);
     Route::post('/business/owner/create', [OwnerController::class, 'create']);
@@ -130,6 +131,7 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/business/owner/show/{id}', [OwnerController::class, 'show']);
     Route::get('/business/owner/delete-all/{id}', [OwnerController::class, 'delall']);
     Route::get('/business/owner/getdataowner-serverside', [OwnerController::class, 'getOwnerDataServerSide']);
+    Route::post('/business/owner/file-import', [OwnerController::class, 'fileImport'])->name('owner-file-import');
 
     Route::get('/product/from-business/{id}', [ProductController::class, 'addfrom']);
     Route::get('/product', [ProductController::class, 'view'])->name('product');

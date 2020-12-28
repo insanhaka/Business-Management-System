@@ -9,6 +9,8 @@ use App\Models\Community;
 use App\Models\Business;
 use App\Models\Operation_days;
 use Datatables;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\OwnerImport;
 
 class OwnerController extends Controller
 {
@@ -265,4 +267,28 @@ class OwnerController extends Controller
         }
 
     }
+
+    public function fileImport(Request $request)
+    {
+        // validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+ 
+		// menangkap file excel
+        $file = $request->file('file');
+
+		// membuat nama file unik
+		$nama_file = $file->getClientOriginalName();
+ 
+		// upload ke folder file_siswa di dalam folder public
+		$file->move('import_file', $nama_file);
+ 
+		// import data
+		Excel::import(new Business_owner, $file);
+ 
+		// alihkan halaman kembali
+		return back()->with('created', 'Berhasil');
+    }
+
 }

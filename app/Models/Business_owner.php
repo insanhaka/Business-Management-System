@@ -10,7 +10,7 @@ class Business_owner extends Model
     use HasFactory;
 
     protected $table = 'business_owners';
-    protected $guarded = [];
+    protected $fillable = ['id','name','nik','domisili_loc_province','domisili_loc_regency','domisili_loc_district','domisili_loc_village','domisili_address','ktp_loc_province','ktp_loc_regency','ktp_loc_district','ktp_loc_village','ktp_address'];
 
     public static function boot()
     {

@@ -56,10 +56,11 @@
                 </div>
                 <div class="tab-pane fade" id="langkah3" role="tabpanel" aria-labelledby="langkah3-tab">
                     <div class="container">
-                        <form>
+                        <form method="post" action="/dapur/business/owner/file-import" enctype="multipart/form-data">
+                            {{ csrf_field() }}
                             <div class="form-group">
-                              <label for="exampleFormControlFile1">Upload terlebih dahulu data pelaku usahanya</label>
-                              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                              <label for="exampleFormControlFile1">Import terlebih dahulu data pelaku usahanya</label>
+                              <input type="file" class="form-control-file" id="file-import1" name="file">
                             </div>
                             <input class="btn btn-primary" type="submit" value="Import">
                         </form>
@@ -67,10 +68,11 @@
                 </div>
                 <div class="tab-pane fade" id="langkah4" role="tabpanel" aria-labelledby="langkah4-tab">
                     <div class="container">
-                        <form>
+                        <form method="post" action="/dapur/business/owner/file-import" enctype="multipart/form-data">
+                            {{ csrf_field() }}
                             <div class="form-group">
-                              <label for="exampleFormControlFile1">Upload data usahanya</label>
-                              <input type="file" class="form-control-file" id="exampleFormControlFile1">
+                              <label for="exampleFormControlFile1">Import data usahanya</label>
+                              <input type="file" class="form-control-file" id="file-import2" name="file">
                             </div>
                             <input class="btn btn-primary" type="submit" value="Import">
                         </form>
@@ -88,6 +90,43 @@
     $(document).ready(function() {   
         $("#business").addClass("active");
     });
+</script>
+
+<script type="text/javascript">
+    @if ($message = Session::get('created')) 
+            iziToast.success({
+                        title: 'Success',
+                        message: 'Data berhasil disimpan',
+                        position: 'topRight'
+                    });
+    @endif
+</script>
+<script type="text/javascript">
+    @if ($message = Session::get('updated'))
+            iziToast.success({
+                        title: 'Success',
+                        message: 'Data berhasil diubah',
+                        position: 'topRight'
+                    });
+    @endif
+</script>
+<script type="text/javascript">
+    @if ($message = Session::get('deleted'))
+            iziToast.success({
+                        title: 'Success',
+                        message: 'Data berhasil dihapus',
+                        position: 'topRight'
+                    });
+    @endif
+</script>
+<script type="text/javascript">
+    @if ($message = Session::get('warning'))
+            iziToast.error({
+                        title: 'Failed',
+                        message: 'Data gagal diproses',
+                        position: 'topRight'
+                    });
+    @endif
 </script>
 
 @endsection
