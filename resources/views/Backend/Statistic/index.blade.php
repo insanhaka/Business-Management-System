@@ -13,17 +13,17 @@
 }
 
 .list-group::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.1);
     border-radius: 10px;
 }
 
 .list-group::-webkit-scrollbar-thumb {
     border-radius: 10px;
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
 </style>
-    
+
 @endsection
 
 @section('content')
@@ -31,14 +31,14 @@
 <div class="container-fluid" style="margin-top: 3%">
     <div class="row justify-content-center" style="margin-top: 20px;">
         <div class="col-md-7">
-            <div class="card" style="height: 28rem;">
+            <div class="card" style="height: 32rem;">
                 <div class="card-body">
                     <div id="hightchart"></div>
                 </div>
             </div>
         </div>
         <div class="col-md-5">
-            <div class="card" style="height: 28rem;">
+            <div class="card" style="height: 32rem;">
                 <div class="card-body">
                     <H4 class="text-center" style="margin-bottom: 5%">Data Laporan Terbaru</H4>
                     <div class="form-group">
@@ -49,18 +49,12 @@
                             <option value="good">Laporan Sangat Baik Terbanyak</option>
                         </select>
                     </div>
-                    {{-- <table class="table table-sm table-responsive"> --}}
-                        {{-- Handle with JS --}}
-                    {{-- </table> --}}
-                    <div class="row text-center" style="font-size: 12px; margin-top: -3%; margin-bottom: 3%">
-                        <div class="col-md-4">
-                            Nama Usaha
+                    <div class="row justify-content-between" style="font-size: 12px;">
+                        <div class="col-6">
+                            <p>Nama Usaha</p>
                         </div>
-                        <div class="col-md-4">
-                            
-                        </div>
-                        <div class="col-md-4">
-                            Detail
+                        <div class="col-6">
+                            <p style="float: right; margin-right: 25px;">Detail</p>
                         </div>
                     </div>
                     <ul class="list-group" style="font-size: 13px;" id="mylist">
@@ -93,7 +87,7 @@
             </div>
         </div>
     </div>
-</div>      
+</div>
 @endsection
 
 @section('js')
@@ -105,7 +99,7 @@
 <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#statistic").addClass("active");
     });
 </script>
@@ -170,10 +164,10 @@
                         },
                 insidetextfont: {
                             color: '#fff'
-                } 
+                }
             }];
 
-            var layout = { 
+            var layout = {
                 title: 'Data Pelaku Usaha Yang Menyetujui <br>Protokol Kesehatan',
                 font: {size: 12}
             };
@@ -212,10 +206,10 @@
                         },
                 insidetextfont: {
                             color: '#fff'
-                } 
+                }
             }];
 
-            var layout = { 
+            var layout = {
                 title: 'Total Jumlah Laporan Masuk <br>Berdasarkan Tingkat Penilaian',
                 font: {size: 12}
             };
@@ -235,7 +229,6 @@
 </script>
 
 <script>
-    //Mengambil data JSON Alamat untuk KTP
     $(document).ready(function() {
 
         let newlist = $('#mylist');
@@ -257,7 +250,7 @@
 
         $('#sort').on('change', function () {
             var selected = this.value;
-            
+
             if (selected === 'good') {
                 // console.log("bisa");
                 newlist.empty();
@@ -289,7 +282,7 @@
                     $.each(dataterburuk, function (index, entry) {
                         newlist.append($('<li class="list-group-item d-flex justify-content-between align-items-center">'+entry['Nama Usaha']+'<span class="badge badge-primary badge-pill" style="font-size: 13px">'+entry['Jumlah']+'</span><a class="btn btn-primary btn-sm" href="{!!url('/dapur')!!}/business/show/'+entry['id']+'" role="button">View</a></li>'));
                     });
-                
+
                 });
 
             }

@@ -7,7 +7,7 @@
         }
         .tab-pane p {
             font-size: 14px;
-        } 
+        }
     </style>
 @endsection
 
@@ -81,19 +81,19 @@
             </div>
         </div>
     </div>
-    
-</div>      
+
+</div>
 @endsection
 
 @section('js')
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#business").addClass("active");
     });
 </script>
 
 <script type="text/javascript">
-    @if ($message = Session::get('created')) 
+    @if ($message = Session::get('created'))
             iziToast.success({
                         title: 'Success',
                         message: 'Data berhasil disimpan',

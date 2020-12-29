@@ -162,7 +162,7 @@
                     <div class="row select-formhide" id="select_parent">
                         <div class="col-md-12">
                             <div class="form-group">
-                                <label for="exampleInput">Upload Bukti</label>
+                                <label for="exampleInput">Upload Bukti (JPG/JPEG/PNG MAx 2Gb)</label>
                                 <div class="tower-file">
                                     <input type="file" name="attachment" id="demoInput5" />
                                     <label for="demoInput5" class="btn btn-primary">
@@ -198,6 +198,16 @@
     $(document).ready(function() {
         $("#business").addClass("active");
     });
+</script>
+
+<script type="text/javascript">
+    @if ($message = Session::get('warningnik'))
+            iziToast.error({
+                        title: 'Failed',
+                        message: 'NIK Sudah Terdaftar',
+                        position: 'topRight'
+                    });
+    @endif
 </script>
 
 <script type="text/javascript">

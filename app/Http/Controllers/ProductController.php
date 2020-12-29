@@ -102,7 +102,7 @@ class ProductController extends Controller
                 return back()->with('warning','Data Gagal Disimpan');
             }
 
-            
+
         }
 
     }
@@ -141,7 +141,7 @@ class ProductController extends Controller
                 $data[] = $item->id;
             }
             $photo_dell = Product_photo::destroy($data);
-            
+
             foreach( $photo as $img )
             {
                 $nama_file = time()."_".$img->getClientOriginalName();

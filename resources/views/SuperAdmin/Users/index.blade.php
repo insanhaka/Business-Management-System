@@ -1,7 +1,7 @@
 @extends('SuperAdmin.Layouts.app')
 
 @section('css')
-    
+
 @endsection
 
 @section('content')
@@ -23,6 +23,7 @@
                         <th>Roles</th>
                         <th>Picture</th>
                         <th>Status</th>
+                        <th>Activation</th>
                         <th>Action</th>
                     </tr>
                 </thead>
@@ -43,6 +44,7 @@
                         @else
                         <td><img src="{{asset('profile_pictures/'.$user->photo)}}" class="img-fluid" alt="Responsive image" width="50"></td>
                         @endif
+                        <td>{!!$user->status!!}</td>
                         @if ($user->is_active == 0)
                         <td>
                             <label class="custom-toggle">
@@ -68,13 +70,13 @@
             </table>
         </div>
     </div>
-    
-</div>    
+
+</div>
 @endsection
 
 @section('js')
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#users").addClass("active");
     });
 </script>

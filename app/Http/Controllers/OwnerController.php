@@ -16,7 +16,7 @@ class OwnerController extends Controller
 {
     public function getOwnerDataServerSide()
     {
-       
+
         $data = Business_owner::query();
         return Datatables::eloquent($data)
             ->orderColumn('name', function ($query, $order) {
@@ -65,62 +65,66 @@ class OwnerController extends Controller
 
     public function create(Request $request)
     {
-        // dd($request->all());
+        $cek_nik = Business_owner::where('nik', $request->nik)->first();
 
-        $attachment = $request->file('attachment');
-
-        if ($attachment == null) {
-            $data = new Business_owner;
-            $data->name = $request->name;
-            $data->nik = $request->nik;
-
-            $data->ktp_loc_province = $request->ktp_loc_province;
-            $data->ktp_loc_regency = $request->ktp_loc_regency;
-            $data->ktp_loc_district = $request->ktp_loc_district;
-            $data->ktp_loc_village = $request->ktp_loc_village;
-            $data->ktp_address = $request->ktp_address;
-
-            $data->domisili_loc_province = $request->domisili_loc_province;
-            $data->domisili_loc_regency = $request->domisili_loc_regency;
-            $data->domisili_loc_district = $request->domisili_loc_district;
-            $data->domisili_loc_village = $request->domisili_loc_village;
-            $data->domisili_address = $request->domisili_address;
-
-            $process = $data->save();
-            if ($process) {
-                return redirect(url('/dapur/business'))->with('owner_created', 'Berhasil');
-            }else {
-                return back()->with('warning','Data Gagal Disimpan');
-            }
+        if ($cek_nik) {
+            return back()->with('warningnik','NIK Sudah Terdaftar');
         }else {
-            $nama_file = time()."_".$attachment->getClientOriginalName();
-            // isi dengan nama folder tempat kemana file diupload
-            $tujuan_upload = 'agreement_file';
-            $attachment->move($tujuan_upload, $nama_file);
+            $attachment = $request->file('attachment');
 
-            $data = new Business_owner;
-            $data->name = $request->name;
-            $data->nik = $request->nik;
+            if ($attachment == null) {
+                $data = new Business_owner;
+                $data->name = $request->name;
+                $data->nik = $request->nik;
 
-            $data->ktp_loc_province = $request->ktp_loc_province;
-            $data->ktp_loc_regency = $request->ktp_loc_regency;
-            $data->ktp_loc_district = $request->ktp_loc_district;
-            $data->ktp_loc_village = $request->ktp_loc_village;
-            $data->ktp_address = $request->ktp_address;
+                $data->ktp_loc_province = $request->ktp_loc_province;
+                $data->ktp_loc_regency = $request->ktp_loc_regency;
+                $data->ktp_loc_district = $request->ktp_loc_district;
+                $data->ktp_loc_village = $request->ktp_loc_village;
+                $data->ktp_address = $request->ktp_address;
 
-            $data->domisili_loc_province = $request->domisili_loc_province;
-            $data->domisili_loc_regency = $request->domisili_loc_regency;
-            $data->domisili_loc_district = $request->domisili_loc_district;
-            $data->domisili_loc_village = $request->domisili_loc_village;
-            $data->domisili_address = $request->domisili_address;
+                $data->domisili_loc_province = $request->domisili_loc_province;
+                $data->domisili_loc_regency = $request->domisili_loc_regency;
+                $data->domisili_loc_district = $request->domisili_loc_district;
+                $data->domisili_loc_village = $request->domisili_loc_village;
+                $data->domisili_address = $request->domisili_address;
 
-            $data->attachment = $nama_file;
-
-            $process = $data->save();
-            if ($process) {
-                return redirect(url('/dapur/business'))->with('owner_created', 'Berhasil');
+                $process = $data->save();
+                if ($process) {
+                    return redirect(url('/dapur/business'))->with('owner_created', 'Berhasil');
+                }else {
+                    return back()->with('warning','Data Gagal Disimpan');
+                }
             }else {
-                return back()->with('warning','Data Gagal Disimpan');
+                $nama_file = time()."_".$attachment->getClientOriginalName();
+                // isi dengan nama folder tempat kemana file diupload
+                $tujuan_upload = 'agreement_file';
+                $attachment->move($tujuan_upload, $nama_file);
+
+                $data = new Business_owner;
+                $data->name = $request->name;
+                $data->nik = $request->nik;
+
+                $data->ktp_loc_province = $request->ktp_loc_province;
+                $data->ktp_loc_regency = $request->ktp_loc_regency;
+                $data->ktp_loc_district = $request->ktp_loc_district;
+                $data->ktp_loc_village = $request->ktp_loc_village;
+                $data->ktp_address = $request->ktp_address;
+
+                $data->domisili_loc_province = $request->domisili_loc_province;
+                $data->domisili_loc_regency = $request->domisili_loc_regency;
+                $data->domisili_loc_district = $request->domisili_loc_district;
+                $data->domisili_loc_village = $request->domisili_loc_village;
+                $data->domisili_address = $request->domisili_address;
+
+                $data->attachment = $nama_file;
+
+                $process = $data->save();
+                if ($process) {
+                    return redirect(url('/dapur/business'))->with('owner_created', 'Berhasil');
+                }else {
+                    return back()->with('warning','Data Gagal Disimpan');
+                }
             }
         }
 
@@ -274,19 +278,19 @@ class OwnerController extends Controller
 		$this->validate($request, [
 			'file' => 'required|mimes:csv,xls,xlsx'
 		]);
- 
+
 		// menangkap file excel
         $file = $request->file('file');
 
 		// membuat nama file unik
-		$nama_file = $file->getClientOriginalName();
- 
+		$nama_file = time()."_".$file->getClientOriginalName();
+
 		// upload ke folder file_siswa di dalam folder public
 		$file->move('import_file', $nama_file);
- 
+
 		// import data
-		Excel::import(new Business_owner, $file);
- 
+        Excel::import(new OwnerImport, public_path('/import_file/'.$nama_file));
+
 		// alihkan halaman kembali
 		return back()->with('created', 'Berhasil');
     }

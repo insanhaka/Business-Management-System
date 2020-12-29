@@ -27,8 +27,8 @@ Route::get('data-product-category', [ApiController::class, 'dataproductcategory'
 Route::get('data-product', [ApiController::class, 'dataproduct']);
 Route::get('data-photo-product', [ApiController::class, 'dataphotoproduct']);
 Route::get('data-report', [ApiController::class, 'datareport']);
-
 Route::get('data-report-custome', [ApiController::class, 'datareportcustome']);
-
 Route::get('data-grade-report', [ApiController::class, 'gradereport']);
 Route::get('data-prokes-agree-count', [ApiController::class, 'prokesagree']);
+
+Route::post('seller-register', [ApiController::class, 'sellerregister']);

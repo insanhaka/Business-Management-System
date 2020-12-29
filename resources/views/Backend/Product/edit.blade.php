@@ -128,8 +128,8 @@
             </form>
         </div>
     </div>
-    
-</div>    
+
+</div>
 @endsection
 
 @section('js')
@@ -137,7 +137,7 @@
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-beta.1/dist/js/select2.min.js"></script>
 
 <script>
-    $(document).ready(function() {   
+    $(document).ready(function() {
         $("#product").addClass("active");
     });
 </script>

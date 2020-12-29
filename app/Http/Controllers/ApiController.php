@@ -14,7 +14,7 @@ use DB;
 
 class ApiController extends Controller
 {
-    
+
     public function datauser()
     {
         $user = User::all();
@@ -186,6 +186,20 @@ class ApiController extends Controller
             'message' => 'success',
             'data' => $value,
         ]);
+    }
+
+    public function sellerregister(Request $request)
+    {
+        // dd($request->username);
+
+        $signup = new User;
+        $signup->name = $request->name;
+        $signup->username = $request->username;
+        $signup->email = $request->email;
+        $signup->password = bcrypt($request->password);
+        $signup->status = "seller";
+
+        $signup->save();
     }
 
 }

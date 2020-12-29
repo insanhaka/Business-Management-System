@@ -23,7 +23,7 @@ class BusinessController extends Controller
 
     public function getBusinessDataServerSide()
     {
-       
+
         $data = Business::query();
         return Datatables::eloquent($data)
             ->orderColumn('owner', function ($query, $order) {
@@ -72,7 +72,8 @@ class BusinessController extends Controller
         $sector = Sector::all();
         $community = Community::all();
         $category = Business_category::all();
-        return view('Backend.Business.create_business', ['sector' => $sector, 'community' => $community, 'category' => $category]);
+        $owner = Business_owner::all();
+        return view('Backend.Business.create_business', ['sector' => $sector, 'community' => $community, 'category' => $category, 'owner' => $owner]);
     }
 
     public function create(Request $request)
