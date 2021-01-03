@@ -25,20 +25,16 @@
                 <li class="nav-item" role="presentation">
                   <a class="nav-link" id="langkah3-tab" data-toggle="tab" href="#langkah3" role="tab" aria-controls="langkah3" aria-selected="false">Langkah 3</a>
                 </li>
-                <li class="nav-item" role="presentation">
-                    <a class="nav-link" id="langkah4-tab" data-toggle="tab" href="#langkah4" role="tab" aria-controls="langkah4" aria-selected="false">Langkah 4</a>
-                </li>
             </ul>
             <div class="tab-content" id="myTabContent" style="margin-top: 3%;">
                 <div class="tab-pane fade show active" id="langkah1" role="tabpanel" aria-labelledby="langkah1-tab">
                     <div class="container">
                         <ul class="list-unstyled">
-                            <li><p>Siapkan dua data yaitu <b>Data Pemilik Usaha</b> dan <b>Data Usahanya</b></p></li>
+                            <li><p>Siapkan <b>Data Produk</b></p></li>
                             <li><p>Data yang akan di import dalam bentuk file excel harus menyesuaikan format yang telah ditentukan pada sistem.</p></li>
                             <li>
                                 <p>Unduh format file excel Dibawah ini</p>
-                                <a class="btn btn-primary btn-sm" href="{{url('/example_import/format-data-pelaku-usaha.xlsx')}}" role="button"><i class="fa fa-download" aria-hidden="true"></i> Format data pemilik usaha</a>
-                                <a class="btn btn-primary btn-sm" href="{{url('/example_import/format-data-usaha.xlsx')}}" role="button"><i class="fa fa-download" aria-hidden="true"></i> Format data usaha</a>
+                                <a class="btn btn-primary btn-sm" href="{{url('/example_import/format-data-produk.xlsx')}}" role="button"><i class="fa fa-download" aria-hidden="true"></i> Format data produk usaha</a>
                             </li>
                         </ul>
                     </div>
@@ -49,34 +45,19 @@
                             <li><p>Setelah selesai mengunduh format file excel, silahkan isi data dengan langkah sebagai berikut :</p></li>
                             <li>ID merupakan data kunci yang digunakan agar data saling terintegrasi, jadi mohon untuk diperhatikan.</li>
                             <br>
-                            <li>Nomor ID untuk data pemilik usaha pada file excel yang akan di import, untuk saat ini tersedia diatas <b>{!!$ownermax!!}</b></li>
-                            <li>- Contoh pengisian untuk data pemilik usaha dapat dilihat pada gambar dibawah</li> 
-                            <img src="{{asset('assets/img/example-data-pelaku-usaha-01.png')}}" class="img-fluid" alt="Responsive image" style="margin-bottom: 3%">
-                            <li>Nomor ID untuk data usaha pada file excel yang akan di import, untuk saat ini tersedia diatas <b>{!!$businessmax!!}</b></li>
-                            <li>- Contoh pengisian untuk data usaha dapat dilihat pada gambar dibawah</li> 
-                            <img src="{{asset('assets/img/example-data-usaha-01.png')}}" class="img-fluid" alt="Responsive image">
+                            <li>Nomor ID untuk data produk pada file excel yang akan di import merupakan random number yang terdiri dari minimal 10 digit dan maksimal 15 digit seperti contoh sebagai berikut <b>{!!$productmax!!}</b></li>
+                            <li>- Contoh pengisian untuk data produk dapat dilihat pada gambar dibawah</li> 
+                            <img src="{{asset('assets/img/example-data-product-01.png')}}" class="img-fluid" alt="Responsive image" style="margin-bottom: 3%">
                         </ul>
                     </div>
                 </div>
                 <div class="tab-pane fade" id="langkah3" role="tabpanel" aria-labelledby="langkah3-tab">
                     <div class="container">
-                        <form method="post" action="/dapur/business/owner/file-import" enctype="multipart/form-data">
+                        <form method="post" action="/dapur/product/file-import" enctype="multipart/form-data">
                             {{ csrf_field() }}
                             <div class="form-group">
-                              <label for="exampleFormControlFile1">Import terlebih dahulu data pelaku usahanya</label>
+                              <label for="exampleFormControlFile1">Import Data Produk Dibawah ini</label>
                               <input type="file" class="form-control-file" id="file-import1" name="file">
-                            </div>
-                            <input class="btn btn-primary" type="submit" value="Import">
-                        </form>
-                    </div>
-                </div>
-                <div class="tab-pane fade" id="langkah4" role="tabpanel" aria-labelledby="langkah4-tab">
-                    <div class="container">
-                        <form method="post" action="/dapur/business/file-import" enctype="multipart/form-data">
-                            {{ csrf_field() }}
-                            <div class="form-group">
-                              <label for="exampleFormControlFile1">Import data usahanya</label>
-                              <input type="file" class="form-control-file" id="file-import2" name="file">
                             </div>
                             <input class="btn btn-primary" type="submit" value="Import">
                         </form>
@@ -92,7 +73,7 @@
 @section('js')
 <script>
     $(document).ready(function() {
-        $("#business").addClass("active");
+        $("#product").addClass("active");
     });
 </script>
 

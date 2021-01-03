@@ -11,6 +11,8 @@ use App\Models\Business_owner;
 use App\Models\Operation_days;
 use Illuminate\Support\Str;
 use Datatables;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\BusinessImport;
 
 class BusinessController extends Controller
 {
@@ -428,8 +430,37 @@ class BusinessController extends Controller
     }
 
     public function import()
+    { 
+        $owner_max_id = Business_owner::all()->max('id');
+        $owner_available_id = $owner_max_id + 5;
+
+        $business_max_id = Business::all()->max('id');
+        $business_available_id = $business_max_id + 5;
+
+        return view('Backend.Business.import', ['ownermax' => $owner_available_id, 'businessmax' => $business_available_id]);
+    }
+
+    public function fileImport(Request $request)
     {
-        return view('Backend.Business.import');
+        // validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+
+		// menangkap file excel
+        $file = $request->file('file');
+
+		// membuat nama file unik
+		$nama_file = time()."_".$file->getClientOriginalName();
+
+		// upload ke folder file_siswa di dalam folder public
+		$file->move('import_file', $nama_file);
+
+		// import data
+        Excel::import(new BusinessImport, public_path('/import_file/'.$nama_file));
+
+		// alihkan halaman kembali
+		return back()->with('created', 'Berhasil');
     }
 
 }

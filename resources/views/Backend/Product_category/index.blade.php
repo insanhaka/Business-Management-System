@@ -23,6 +23,7 @@
             <table id="datatable" class="table table-striped table-sm table-bordered display responsive nowrap" style="width:100%">
                 <thead class="bg-primary" style="color: #ffff;">
                     <tr>
+                        <th>Id</th>
                         <th>Name</th>
                         {{-- <th>Icon</th> --}}
                         <th>Action</th>
@@ -31,6 +32,7 @@
                 <tbody>
                     @foreach ($category as $data)
                     <tr>
+                        <td>{!! $data->id !!}</td>
                         <td>{!!$data->name!!}</td>
                         {{-- <td><img src="{{asset('menus_icon/'.$data->icon)}}" class="img-fluid" alt="Responsive image" width="50"></td> --}}
                         <td>

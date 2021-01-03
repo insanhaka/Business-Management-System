@@ -142,6 +142,8 @@ Route::group(['prefix' => 'dapur', 'middleware' => 'auth'], function () {
     Route::get('/product/delete/{id}', [ProductController::class, 'delete']);
     Route::get('/product/show/{id}', [ProductController::class, 'show']);
     Route::post('/product/activation', [ProductController::class, 'activation']);
+    Route::get('/product/import', [ProductController::class, 'import']);
+    Route::post('/product/file-import', [ProductController::class, 'fileImport'])->name('product-file-import');
 
     Route::get('/statistic', [StatisticController::class, 'view'])->name('statistic');
 

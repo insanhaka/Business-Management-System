@@ -23,6 +23,7 @@ class UserSeeder extends Seeder
             'remember_token' => Str::random(10),
             'is_active' => true,
             'roles_id' => 1,
+            'status' => 'dinas',
         ]);
 
         $SAdmin->assignRole('Supermin');

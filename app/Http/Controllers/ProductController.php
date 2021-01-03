@@ -10,6 +10,8 @@ use App\Models\Business;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
 use DB;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Imports\ProductImport;
 
 class ProductController extends Controller
 {
@@ -199,5 +201,36 @@ class ProductController extends Controller
         $business->is_active = $request->is_active;
 
         $process = $business->save();
+    }
+
+    public function import()
+    { 
+        $product_max_id = Product::all()->max('id');
+        $product_available_id = $product_max_id + 5;
+
+        return view('Backend.Product.import', ['productmax' => $product_available_id]);
+    }
+
+    public function fileImport(Request $request)
+    {
+        // validasi
+		$this->validate($request, [
+			'file' => 'required|mimes:csv,xls,xlsx'
+		]);
+
+		// menangkap file excel
+        $file = $request->file('file');
+
+		// membuat nama file unik
+		$nama_file = time()."_".$file->getClientOriginalName();
+
+		// upload ke folder file_siswa di dalam folder public
+		$file->move('import_file', $nama_file);
+
+		// import data
+        Excel::import(new ProductImport, public_path('/import_file/'.$nama_file));
+
+		// alihkan halaman kembali
+		return back()->with('created', 'Berhasil');
     }
 }

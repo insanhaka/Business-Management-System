@@ -15,6 +15,7 @@
                     <h2 class="text-primary">Data Produk</h2>
                 </div>
                 <div class="col-md-6 text-right">
+                    <a class="btn btn-success" href="/dapur/product/import" role="button">Import Excel</a>
                     {!! ButtonLib::addButton(Auth::user()->getRoleNames()) !!}
                 </div>
             </div>
