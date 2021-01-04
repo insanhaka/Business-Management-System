@@ -15,7 +15,7 @@ class AuthorizeController extends Controller
 
     public function postlogin(Request $request)
     {
-        
+
         if (Auth::attempt(['username' => $request->username, 'password' => $request->password]))
         {
             $user = User::where('username', $request->username)->first();
@@ -60,6 +60,7 @@ class AuthorizeController extends Controller
         $signup->email = $request->email;
         $signup->password = bcrypt($request->password);
         $signup->is_active = $request->is_active;
+        $signup->status = $request->status;
 
         $signup->save();
     }
